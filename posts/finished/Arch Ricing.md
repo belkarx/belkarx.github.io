@@ -9,8 +9,8 @@ Here are my attempts at ricing (live page, subject to updates as I improve)
 
 ---
 
-![first attempt](images/first_rice.jpg "First attempt")
-![second attempt](images/second_rice.jpg "Second attempt")
-![third attempt](images/third_rice.jpg "third attempt")
-![fourth attempt](images/fourth_rice.jpg "fourth attempt")
-![fifth attempt](images/fifth_rice.png "fifth attempt")
+![first attempt](../cdn/first_rice.jpg "First attempt")
+![second attempt](../cdn/second_rice.jpg "Second attempt")
+![third attempt](../cdn/third_rice.jpg "third attempt")
+![fourth attempt](../cdn/fourth_rice.jpg "fourth attempt")
+![fifth attempt](../cdn/fifth_rice.png "fifth attempt")
