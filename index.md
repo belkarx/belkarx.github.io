@@ -6,4 +6,4 @@ Current interests: Linux/GNU | Rust, C, C++, Golang, Python | Cybersecurity, AI,
 [Github](https://github.com/belkarx) | [StackOverflow](https://stackoverflow.com/users/16191884/belkarx)
 
 Blog
--> [Posts](posts_main.html)
+-> [Posts](posts/posts_main.html)

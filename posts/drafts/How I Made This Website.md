@@ -41,7 +41,7 @@ edt() {
 		fi
 		echo "no arg provided: using $WEB_FNAME"
 	else
-		export WEB_FNAME=$(basename -- "$1")
+		export WEB_FNAME=$(echo $1 | cut -d. -f1)
 	fi
     nvim $PROJ_DIR/posts/drafts/$WEB_FNAME.md
 }
@@ -93,8 +93,8 @@ pub() {
 	fi 
 	my_date=$(stat -c %y $PROJ_DIR/posts/finished/$WEB_FNAME.html | awk -F. '{print $WEB_FNAME}') &&
 	#probably could be cleaned up but it works
-	echo "\\> [$WEB_FNAME](posts/finished/$WEB_FNAME.html) || $my_date" >> $PROJ_DIR/posts_main.md &&
-	my_post="<p>\&gt; <a href=\"posts/finished/$WEB_FNAME.html\">$WEB_FNAME</a> \|\| $my_date</p>"
+	echo "\\> [$WEB_FNAME](finished/$WEB_FNAME.html) || $my_date" >> $PROJ_DIR/posts_main.md &&
+	my_post="<p>\&gt; <a href=\"finished/$WEB_FNAME.html\">$WEB_FNAME</a> \|\| $my_date</p>"
 		sed -zEi "s|(\n[^\n]*){3}$|\n$my_post&|" $PROJ_DIR/posts_main.html
 		mv $PROJ_DIR/posts/drafts/$WEB_FNAME.md $PROJ_DIR/posts/finished/$WEB_FNAME.md
 	fi
