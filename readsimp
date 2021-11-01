@@ -1,0 +1,25 @@
+1) edt [optional name]
+2) save from within nvim
+^repeat those steps as needed
+
+
+echo $WEB_FNAME for sanity
+pan [optional name]
+pub
+
+to edit (once published):
+edt [name] 
+pan [name]
+
+to unpublish:
+nvim $PROJ_DIR\posts_main.md
+(remove the line linking to the post)
+jpan posts_main
+mv $PROJ_DIR/posts/finished/$1.md $PROJ_DIR/posts/drafts/
+rm PROJ_DIR\posts\drafts\$1.hmtl
+
+republish:
+unpublish
+edt (as many times as necessary)
+pan [name]
+pub [name]
