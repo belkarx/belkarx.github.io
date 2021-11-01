@@ -110,5 +110,13 @@ pub() {
 
 
 ## Git
+After making changes, I run
+```bash
+git commit -a -m "wrote blog post about something idk"
+git push
+```
+I may further automate this part but for now (as of 2021-10-31) I do this sequence of commands manually and with no aliases.
 
+
+### Setting Up Git(hub Pages)
 
