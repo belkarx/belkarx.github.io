@@ -214,7 +214,17 @@
 </head>
 <body>
 <h1 id="how-i-write-these-posts">How I Write These Posts</h1>
-<h2 id="file-tree-structure">file tree structure</h2>
+<p>Recently I took it upon myself to finally bother to fully create a blog, after some failed attempts. I didn’t particularly like the idea of using a noob-targeting website builder such as Wix and while a more developer-focused builder (such as Hugo) was preferable [I hosted a few pages on one for a while], I disliked the lack of control and transparency I had. I wanted <em>full</em> control. So I made my own buildsystem with a few bash/zsh scripts and neovim. It is 40 lines of easily understandable and hackable shell script, that has been put through enough troubleshooting to be robust enough for reasonable personal use.</p>
+<h4 id="what-i-learned">What I learned</h4>
+<ul>
+<li>When testing shell scripts, don’t put them directly into <code>~/.zshrc</code> without testing since editing them on and off from there is a waste of time</li>
+<li>Comment liberally, and add help commands since forgeting the use of utility scripts is not uncommon</li>
+<li>When creating projects for personal use, don’t disregard normal programming customs. Keep everything organized. Shoddy code when prototyping creates problems later on</li>
+<li>Projects tend to considerably more time and unprecendented troubleshooting than originally expected</li>
+<li>Sometimes tradeoffs need to be made between “best practice” and “it works well enough” as time and effort spent on perfectionism doesn’t always pay off</li>
+</ul>
+<h1 id="technical-info-buildsystem">Technical Info: Buildsystem</h1>
+<h2 id="file-tree-structure">File Tree Structure</h2>
 <pre><code>├── index.html
 ├── index.md
 ├── posts
@@ -241,23 +251,20 @@
 <p>If I have an idea for a blog post, I call <code>edt [post-name]</code> The <code>edt function</code> opens <code>posts\drafts\post-name.md</code> in neovim, and optionally allows you to not provide an argument and open the most recently edited file.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#in ~/.zshrc</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#note: this is a stripped down version of the function without &#39;--help&#39; or error checking</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">WEB_FNAME</span><span class="op">=</span><span class="st">&quot;test&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">WEB_FNAME</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> <span class="va">$PROJ_DIR</span>/posts/drafts/WEB_FNAME<span class="va">)</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">edt()</span> <span class="kw">{</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">[[</span> <span class="st">&quot;</span><span class="va">$WEB_FNAME</span><span class="st">&quot;</span> <span class="ot">==</span> <span class="st">&quot;test&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="bu">cd</span> <span class="va">$PROJ_DIR</span>/posts/drafts/</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">1</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">fi</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">export</span> <span class="va">WEB_FNAME</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="va">$1</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d.</span> <span class="at">-f1</span><span class="va">)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;using </span><span class="va">$WEB_FNAME</span><span class="st">&quot;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">nvim</span> <span class="va">$PROJ_DIR</span>/posts/drafts/<span class="va">$WEB_FNAME</span>.md</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">export</span> <span class="va">WEB_FNAME</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="va">$1</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d.</span> <span class="at">-f1</span><span class="va">)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="va">$WEB_FNAME</span> <span class="op">&gt;</span> <span class="va">$PROJ_DIR</span>/posts/drafts/WEB_FNAME</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;using </span><span class="va">$WEB_FNAME</span><span class="st">&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">nvim</span> <span class="va">$PROJ_DIR</span>/posts/drafts/<span class="va">$WEB_FNAME</span>.md</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> wdir=<span class="st">&quot;cd </span><span class="va">$PROJ_DIR</span><span class="st">/posts/drafts/&quot;</span></span></code></pre></div>
 <h4 id="preview">Preview</h4>
 <p>When the <code>.md</code> file opens, a <a href="https://github.com/iamcco/markdown-preview.nvim">markdown-preview plugin</a> opens a live-updating preview of the page in a browser window, so I can see what my markdown (and <span class="math inline">\(\LaTeX\)</span>) will look like when compiled.</p>
 <p><img src="../cdn/preview.png" /></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#in ~/.zshrc</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#in ~/.config/nvim/init.vim</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">let</span> <span class="va">g</span><span class="op">:</span><span class="va">mkdp_port</span> <span class="op">=</span> <span class="st">&#39;8901&#39;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">let</span> <span class="va">g</span><span class="op">:</span><span class="va">mkdp_browser</span> <span class="op">=</span> <span class="st">&#39;/usr/bin/firefox-developer-edition&#39;</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">let</span> <span class="va">g</span><span class="op">:</span><span class="va">mkdp_auto_close</span> <span class="op">=</span> <span class="dv">0</span></span>
@@ -265,7 +272,7 @@
 <h3 id="writing-content">Writing Content</h3>
 <p>I can then write my post, coming back to it with <code>edt</code> as necessary, until I feel it is complete.</p>
 <h3 id="compiling">Compiling</h3>
-<p>As previously mentioned, I write these posts as Markdown (<code>.md</code>) files, and in order for a browser to display them, they must be HTML. I facilitate the conversion between those formats using <a href="https://pandoc.org/">pandoc</a>. I simplify my use of pandoc with a zsh function because shortening long commands makes life easier.</p>
+<p>As previously mentioned, I write these posts as Markdown (<code>.md</code>) files, and in order for a browser to display them, they must be HTML. I facilitate the conversion between those formats using <a href="https://pandoc.org/">pandoc</a>. I simplify my use of pandoc with a zsh function because shortening long commands makes life easier. This does not need to be called manually and is intended as a helper function to <code>pub</code> (explained in the next section).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#in ~/.zshrc</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pan()</span> <span class="kw">{</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$#</span> <span class="ot">-eq</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
@@ -285,25 +292,31 @@
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">&quot;no arg provided: using </span><span class="va">$WEB_FNAME</span><span class="st">&quot;</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">WEB_FNAME</span><span class="op">=</span><span class="va">$1</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">my_date</span><span class="op">=</span><span class="va">$(</span><span class="fu">stat</span> <span class="at">-c</span> %y <span class="va">$PROJ_DIR</span>/posts/finished/<span class="va">$WEB_FNAME</span>.html <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F.</span> <span class="st">&#39;{print $WEB_FNAME}&#39;</span><span class="va">)</span> <span class="kw">&amp;&amp;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#probably could be cleaned up but it works</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;</span><span class="dt">\\</span><span class="st">&gt; [</span><span class="va">$WEB_FNAME</span><span class="st">](finished/</span><span class="va">$WEB_FNAME</span><span class="st">.html) || </span><span class="va">$my_date</span><span class="st">&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">$PROJ_DIR</span>/posts_main.md <span class="kw">&amp;&amp;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="va">my_post</span><span class="op">=</span><span class="st">&quot;&lt;p&gt;\&amp;gt; &lt;a href=</span><span class="dt">\&quot;</span><span class="st">finished/</span><span class="va">$WEB_FNAME</span><span class="st">.html</span><span class="dt">\&quot;</span><span class="st">&gt;</span><span class="va">$WEB_FNAME</span><span class="st">&lt;/a&gt; \|\| </span><span class="va">$my_date</span><span class="st">&lt;/p&gt;&quot;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sed</span> <span class="at">-zEi</span> <span class="st">&quot;s|(\n[^\n]*){3}$|\n</span><span class="va">$my_post</span><span class="st">&amp;|&quot;</span> <span class="va">$PROJ_DIR</span>/posts_main.html</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mv</span> <span class="va">$PROJ_DIR</span>/posts/drafts/<span class="va">$WEB_FNAME</span>.md <span class="va">$PROJ_DIR</span>/posts/finished/<span class="va">$WEB_FNAME</span>.md</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Posts:</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--- The following entries are autogenerated---&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--- [post-name](relative-post-location) || last-modified-date-of-post-in-&quot;yyyy-mm-dd hh-mm-ss&quot;---&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="sc">\&gt;</span> <span class="co">[</span><span class="ot">Example Post</span><span class="co">](posts/finished/Example\ Post.html)</span> || 2021-01-01 13:37:37</span></code></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pan</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">my_date</span><span class="op">=</span><span class="va">$(</span><span class="fu">stat</span> <span class="at">-c</span> %y <span class="va">$PROJ_DIR</span>/posts/finished/<span class="va">$WEB_FNAME</span>.html <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F.</span> <span class="st">&#39;{print $WEB_FNAME}&#39;</span><span class="va">)</span> <span class="kw">&amp;&amp;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#probably could be cleaned up but it works</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;</span><span class="dt">\\</span><span class="st">&gt; [</span><span class="va">$WEB_FNAME</span><span class="st">](finished/</span><span class="va">$WEB_FNAME</span><span class="st">.html) || </span><span class="va">$my_date</span><span class="st">&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">$PROJ_DIR</span>/posts_main.md <span class="kw">&amp;&amp;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">my_post</span><span class="op">=</span><span class="st">&quot;&lt;p&gt;\&amp;gt; &lt;a href=</span><span class="dt">\&quot;</span><span class="st">finished/</span><span class="va">$WEB_FNAME</span><span class="st">.html</span><span class="dt">\&quot;</span><span class="st">&gt;</span><span class="va">$WEB_FNAME</span><span class="st">&lt;/a&gt; \|\| </span><span class="va">$my_date</span><span class="st">&lt;/p&gt;&quot;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sed</span> <span class="at">-zEi</span> <span class="st">&quot;s|(\n[^\n]*){3}$|\n</span><span class="va">$my_post</span><span class="st">&amp;|&quot;</span> <span class="va">$PROJ_DIR</span>/posts_main.html</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mv</span> <span class="va">$PROJ_DIR</span>/posts/drafts/<span class="va">$WEB_FNAME</span>.md <span class="va">$PROJ_DIR</span>/posts/finished/<span class="va">$WEB_FNAME</span>.md</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pushpost()</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--- in $PROJ_DIR/posts/posts_main.md ---&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu"># Posts:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--- The following entries are autogenerated---&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--- [post-name](relative-post-location) || last-modified-date-of-post-in-&quot;yyyy-mm-dd hh-mm-ss&quot;---&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="sc">\&gt;</span> <span class="co">[</span><span class="ot">Example Post</span><span class="co">](posts/finished/Example\ Post.html)</span> || 2021-01-01 13:37:37</span></code></pre></div>
 <h2 id="git">Git</h2>
-<p>After making changes, I run</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-a</span> <span class="at">-m</span> <span class="st">&quot;wrote blog post about something idk&quot;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
-<p>I may further automate this part but for now (as of 2021-10-31) I do this sequence of commands manually and with no aliases.</p>
+<p>I use git as a version control system, and I have a helper function to push blog posts (called in <code>pub</code>)</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#in ~/.zshrc</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pushpost()</span> <span class="kw">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> commit <span class="at">-a</span> <span class="at">-m</span> <span class="st">&quot;Wrote </span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> push</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
 <h3 id="setting-up-github-pages">Setting Up Git(hub Pages)</h3>
+<p>My site is (for now) hosted on <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages">github pages</a>. That was set up through the below series of commands.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create github pages repo (named username.github.io) using github&#39;s web interface</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$PROJ_DIR</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
