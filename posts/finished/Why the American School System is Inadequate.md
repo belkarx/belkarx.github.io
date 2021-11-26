@@ -1,0 +1,25 @@
+# 
+
+## Sick Days
+One morning, you wake up with a throbbing headache. Your throat is hoarse, it will begin to hurt to swallow once the collection of lubricating mucus slides down into your throat. You immediately reach for a box of tissues, knowing you will likely end up using them all, rapidly. You stumble out of bed and check your temperate: slight fever.
+
+If you're a younger student, elementary school or maybe middle, this is an excuse to stay home for a few days. You might play up the sickness, downplaying your immune system's ability to lead you to recovery. A parent will take care of you, catering to your needs. You are excited, even when sick. You get to miss school!
+
+The attitude of high-achieving (or even average) high schoolers differs drastically from the giddiness of younger students. Missing school is a mistake, a process that is much more pain than it is worth. You feel sick now? That feeling will last long after recovery (however the origin will have changed from health-related to artificial, technically unnecessary but realistically unavoidable stress).
+
+Not attending school for longer than a day as a high school student means missing an exorbitant amount of work. There are tests, quizzes, essays, group-work assignments to make up, not to mention homework and readings. A single day is packed full of activities (given that teachers use their time well, which they generally do), and each of those is intricate, made to be completed under supervision, not through scant, undetailed digital resources thrown together by teachers as a reference and supplement to their lectures and in class instruction.
+
+So, put yourself back in the high school student's point of view.
+You feel physically miserable. Tired, weak, in pain, entirely unproductive. You're at the age where you have to entirely take care of yourself. No adults are going to sit around and coddle you. You want tea, or cough drops? Drag yourself out of bed, try not to pass out from the lightheadedness, and grab them yourself. Crawl back into bed, and your day continues. You can't bring yourself to peacefully rest, dozing off to distract from your discomfort, as you have *responsibilities*.
+
+Alongside the misery of being sick, every hour not spent at school adds to a mounting pile of work. Stress levels spike. You start emailing teachers and messaging friends for more information, as that is your responsibility as a student (no one is going to give you anything to help you catch up unless you politely ask). You plan after-school meetings with teachers to make up tests and such. Your schedule fills. All fo these arrangements must not overlap.
+
+Great! You've found out most of the work you've missed, and you have somehow recovered enough information to understand what went down in class. Now you have to study the material (and then, of course, complete any assignments you can). Forget recouperation; your grade is more important (4.0 GPA here I come).
+
+The effect of missed work increases exponentially as it piles on. The longer one stays sick, the worse the aftermath becomes. And unfortunately, the process of becoming not-sick cannot yet be entirely artificially sped up a significant amount. But being "not-sick" isn't necessary. The goal is not-sick **enough**. And "enough" is relative. For many students, going to school slightly sick is an objectively better alternative to missing the day.
+
+Now ... what happens when students go to school sick? Sickness spreads. And it isn't curbed through isolation for aforementioned insane-workload-related reasons. A vicious cycle forms. More students are pulled into the pain and misery. And it never ends.
+
+The system is fundamentally flawed. The process high school students must go through forces them to make hard choices (grades or health), and those tend to ultimately not be the best for the community. Something must be done. But the burden cannot be placed on teachers. Forcing them to accomodate for absent students is a lot of work, and an improper solution to what is ultimately an administrative problem. More reasonable general guidelines must be set by those in power, and leniency in workload should be enforced.
+
+The realisation of a sick day should not be followed by a wave of anxiety and prolonged period of stress over the implications of not going to school.
