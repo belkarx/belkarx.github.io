@@ -7,5 +7,3 @@
 
 \> [Why the American School System is Inadequete](finished/Why the American School System is Inadequete.html) || 2021-11-25 18:49:21.596731264 -0800
 
-\> [Why the American School System is Inadequete](finished/Why the American School System is Inadequete.html) || 2021-11-25 18:49:21.596731264 -0800
-
