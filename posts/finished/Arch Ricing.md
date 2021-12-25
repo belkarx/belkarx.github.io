@@ -14,3 +14,6 @@ Here are my attempts at ricing (live page, subject to updates as I improve)
 ![third attempt](../cdn/third_rice.jpg "third attempt")
 ![fourth attempt](../cdn/fourth_rice.jpg "fourth attempt")
 ![fifth attempt](../cdn/fifth_rice.png "fifth attempt")
+![sixth attempt](../cdn/sixth_rice.png "sixth attempt")
+![seventh attempt](../cdn/seventh_rice.png "seventh attempt")
+
