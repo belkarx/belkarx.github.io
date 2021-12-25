@@ -13,7 +13,5 @@
 
 \> [Git Cheatsheet](finished/Git Cheatsheet.html) || 2021-12-25 10:10:27
 
-\> [Bash Aliases for Productivity.md](finished/Bash Aliases for Productivity.md.html) || 
-
 \> [Bash Aliases for Productivity](finished/Bash Aliases for Productivity.html) || 2021-12-25 14:39:34
 
