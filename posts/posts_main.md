@@ -9,3 +9,5 @@
 
 \> [About Me, 2020](finished/About Me, 2020.html) || 2021-12-25 10:03:44
 
+\> [RITSEC 2021 Writeups](finished/RITSEC 2021 Writeups.html) || 2021-12-25 10:10:03
+
