@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Git Cheatsheet</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="github-cli">Github CLI</h1>
+<h2 id="intro">Intro</h2>
+<p>Github is hard. IDK why. here’s a nice annotated summary of the most vital command-line commands so you can start contributing without screwing things up.</p>
+<h3 id="summary">Summary</h3>
+<p>Get a github repo: <code>git clone [repo]</code></p>
+<p>Pushing to a repo:</p>
+<pre><code>git status
+git add . OR git add [files]
+git commit -m &quot;[message]&quot;
+git push</code></pre>
+<p>Creating a new repo - no clue. do it remotely, on the website. The only local way to do it is using the api or third-party tools/scripts…</p>
+<h3 id="less-summarized">Less Summarized</h3>
+<p><code>git clone [url]</code>: Initializes local github repository from remote. Creates a folder with .git, the repo name and repo contents. &lt;“I want your code”&gt;</p>
+<p><code>git add . OR git add [files]</code>: Indicates which files you wish to commit. (‘.’ means current directory) Adds up your changes. &lt;“These files are done now”&gt;</p>
+<p><code>git commit -m [message]</code>: Takes ’add’ed files and assigns a message to them [so the repo owner knows what was changed and why]. &lt;“I am done making changes now”&gt;</p>
+<p>Sidenote: <code>git add . &amp;&amp; git commit -m [message]</code> can be replaced by <code>git commit -am [message]</code></p>
+<p><code>git push</code>: Syncs changes to remote repo. &lt;“here, have my code”&gt;</p>
+<p><code>git status</code>: Check what needs updating. &lt;“whats going on?”&gt;</p>
+<p>if there are updates then -&gt; <code>git pull</code>: Updates local from remote if there are changes &lt;“Give me your code”&gt;</p>
+<h3 id="dealing-with-inevitable-failures">Dealing with Inevitable Failures</h3>
+<p>Search up any errors with your favorite search engine.</p>
+<p>if you screw up a repo: <code>git reset --hard</code></p>
+<blockquote>
+<p>if you just mess with github enough, break enough repositories, you’ll get used to it</p>
+</blockquote>
+<p>THE END. Go on and contribute to the open source community! Good luck!</p>
+</body>
+</html>

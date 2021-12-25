@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>RITSEC 2021 Writeups</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="ritsec-2021">RITSEC 2021</h1>
+<h2 id="unnecessary-intro">Unnecessary Intro</h2>
+<p>RITSEC. After good experiences with RITx cybersec classes on Edx, I was excited to try the CTF, and was right to be, I had an absolute blast. The questions were of varying difficulty and there were some interesting and creative ones, some of the challenges that I solved are below. I finished in the 200+somethingidk place which isn’t amazing but above average since there were about 700 participants and I was playing as an individual against teams. Anyway, enough with the unnecessary intro, and let’s GO FORTH AND CONQUER the questions through writeups.</p>
+<h3 id="lorem-ipsum">Lorem Ipsum</h3>
+<p>We are given cipher.txt which contains:</p>
+<pre><code>Incompraehensibilis Conseruator.
+Redemptor optimus
+Iudex omnipotens
+Sapientissimus omnipotens
+Redemptor fabricator
+Iudex redemptor
+Optimus magnus
+Aeternus iudex
+Auctor omnipotens.</code></pre>
+<p>I couldn’t find the name of the cipher through googling so I downloaded the image from the challenge description, ran it through tineye to find out what it was. Turns out the image was Ave Maria, so I searched ‘ave maria cipher’ and found <a href="https://www.dcode.fr/trithemius-ave-maria">dcode/trithemius-ave-maria</a></p>
+<p>After putting the cipher through dcode (w/bruteforce), I got <code>RSTHISISTRITHEMIUS</code></p>
+<p>Since the description mentioned the flag was case-sensitive, I only capitalised RS and every other letter (since that’s how the original cipher was capitalised), then wrapped it in brackets to get <code>RS{ThIsIsTrItHeMiUs}</code></p>
+<h3 id="birdthief-fysa">BIRDTHIEF: FYSA</h3>
+<p>We are given a pdf of a powerpoint. After a cursory glance, I noticed a line was blacked out, so I screen-snipped the blacked out text and dragged it into GIMP, increasing contrast, because people apparently highlight text in black instead of using the somewhat more secure built-in censorship tool.</p>
+<p>After that didn’t yeild results, I opened the document in a pdf editor and just click+deleted the black box, and underneath was the flag: <code>RS{make_sure_t0_read_the_briefing</code>. Finding Geno</p>
+<p>Given the name Geno and the firm Bridgewater, finding Geno was a simple matter of shoving “bridgewater” “geno” into duckduckgo. The first hit was <a href="https://www.linkedin.com/in/geno-ikonomov" class="uri">https://www.linkedin.com/in/geno-ikonomov</a>, giving us the last name and therefore flag of <code>RS{ikonomov}</code></p>
+<h3 id="robots">Robots</h3>
+<p>This challenge was an absolute pain to do since I entirely overthought it. How? The story of hours of my life wasted follows.</p>
+<p>So, the website contained a ton of pages with <code>Robots are taking over ~You need to hide. They have become smarter than us~</code>, and the phrase ‘hide’ automatically brings to mind the robots.txt page. A robots.txt page is a text file that usually contains pages not to be scraped by google or anyone else’s bots, and I thought it would contain the flag, or a link to the flag’s page, and the challenge would be over, since it was, after all, a simple 100 point chall.</p>
+<p>I thought wrong. The page consisted of 50+ links that were designated the status of allowed or disallowed. After looking through the list and finding a <code>/[random-string-of-characters-presumably-here-to-stop-dirbusteresque-tools]/flag</code> page which didn’t turn up anything (“page does not exist”), I came to the conclusion that the flag was contained in one of the links in robots.txt.</p>
+<p>I cleaned up the text file a bit and made a python script with requests that checked for the presence of “RS” in the webpages, but it turned out most of the pages gave 404 errors so I had to add a conditional to ensure the status_code of the request was valid. That narrowed down my search to exactly 6 links which looked like php pages so I tried to exploit those and got nowhere.</p>
+<p>I then started doing the obvious stuff like checking for <code>/flag</code> or <code>/FLAG</code> or <code>/robots</code> pages, to no avail. At the top of the robots.txt page, a User-Agent was specified, so I tried resending requests to all of the links with the user-agent header changed. No success.</p>
+<p>I then looked at the html and realized that there was ‘flag.txt’ in invisible black on every page. I accessed /flag.txt and found the string VW05aWIzUnpJR0Z5WlNCMFlXdHBibWNnYjNabGNpQXVMaTQ9. I base64decode-ed that (twice) and got “Robots are taking over …” mocking me on the screen.</p>
+<p>Luckily for me, the string reminded me of the random string of letters before the /[here]/flag, so I face-palmed and b64 -d’d that string (“UlN7UjBib3RzX2FyM19iNGR9”) and received RS{R0bots_ar3_b4d}</p>
+<h3 id="sessions">Sessions</h3>
+<p>When visiting the challenge website, you are greeted with a basic login page.</p>
+<p>Me: proceeds to try to SQLi the login page even though there is no indication that the challenge is geared toward that particular exploit.</p>
+<p>Also me: fails (predictably).</p>
+<p>I check the HTML out of habit and find a comment <code>&lt;!--#remove comment later: login iroh:iroh--&gt;</code></p>
+<p>Well that was easy. I login with the “leaked” creds and find a homepage, a ‘tribute to Iroh and all things him’. I didn’t who or what Iroh is. I still don’t know, actually… The page had 2 links, a bio and a family tree. I spent way too long looking for info on those two links. I nearly read Iroh’s entire 5000 character (1000 word) biography until I realised it was boring and useless (a few sentences in), resigning myself to just ctrl-f-ing and hoping there werent any clues buried in the wall of text. There was a rickroll at the bottom labelled ‘flag here’ that I may or may not have fallen for but that’s irrelevant.</p>
+<p>As for the family tree, that was very close to being subjected to stegseek but at that moment I realised that I really should be focusing on potential exploits related to the challenge title and opened up the network manager web-dev tool, aka “Right-Click&amp;Inspect”. I find nothing and am frustrated then decide allow cookies on the site hahahahhahahhaaaaaaaaa…</p>
+<p>Now a session token is visible, but of what use could it possibly be to me? It just looks like a regular jumbled-letter cookie. Fortunately I had learned my lesson from Robots and allowed myself to think that it just might be base64, and found <code>RS{0nly_One_s3ssion_tok3n}</code></p>
+</body>
+</html>
