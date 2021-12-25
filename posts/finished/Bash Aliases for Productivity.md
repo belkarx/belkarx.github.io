@@ -10,7 +10,7 @@ This is not an exhaustive list of my aliases, however it is curated to include t
 export SUDO_PROMPT="enter the password, dumbass: " #because apparently you can change this
 alias 'make\ love'='echo "lmao u wish linux user"' #make being a buildsystem
 alias bat="cat /sys/class/power_supply/BAT0/capacity &&\ 
-ffplay /home/uk000/Documents/battery.m4a --nodisp &>/dev/null &" 
+ffplay /home/uk000/Documents/battery.m4a -nodisp &>/dev/null &" 
 #^gets battery and plays battery; pkill ffplay to stop
 
 #if you type 'fsck you' (fsck is a file-system-checking binary), the system will fsck you back
