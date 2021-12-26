@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>X-MAS CTF 2021 Writeups</title>
+  <link rel="stylesheet" href="../css.css">
+</head>
+<h1 id="xmas-ctf-2021">XMAS CTF 2021</h1>
+<p>This capture the flag competition was the first I ever competed in (in 2020), and contains some of the most creative and varied challenges I’ve seen thus far. I competed individually and had other commitments during the competition times, so I didn’t invest as much time as I would have liked, however the experience was still quite entertaining and educational.</p>
+<h2 id="discord">Discord</h2>
+<h3 id="sanity-check">Sanity Check</h3>
+<p>The <code>Sanity Check</code> flag in the discord was hidden in the <code>#general</code> channel’s description (as it was last year). People have a surprisingly hard time finding this, overthinking and believing it has something to do with a bot, which created quite a bit of spam in the channels (something the hosts might benefit from mitigating in subsequent years).</p>
+<h3 id="bot">Bot</h3>
+<p>Upon seeing the <code>Mem-X</code> challenge, I tentatively identified as based on a file inclusion vulnerability, and proceeded as such. The basis of the challenge was bot functionality to make notes using the <code>!note [name of note]</code> command, which returned a hash of the note. The user could then read the note by passing the hash to the <code>!remember</code> command.</p>
+<p>After playing with different parameters, trying variations of <code>flag.txt</code> (<code>!note flag.txt</code>, <code>!note ../flag.txt</code>, <code>!note flag</code>) and using the received hashes as parameters to <code>!remember</code>, I realised I may have been going about this the wrong way. I considered that the notes may have been saved with their hashes as filenames and tried <code>!remember flag</code>, receiving “We couldn’t find a note called <code>flag.txt</code>”. I then sent <code>!remember /flag</code> and received the flag! <code>X-MAS{f0rgEtt1nG_EvEry7h1Ng_abf91b10e019c}</code></p>
+<h2 id="bioinformatics">Bioinformatics</h2>
+<h3 id="having-a-blast">Having a BLAST</h3>
+<p>Given a DNA sequence of an enzyme, the goal was to find the enzyme encoded.</p>
+<pre><code>CGCTTCCTCCCCAAATTGCTCAGCGCCACCGGTATGCAGGGGCCAGCGGGCAGCGGCTGGGAGGAGGGGAGTGGGAGCCCGCCAGGTGTAACCCCTCTCTTCTCCCCCTAGCCTCGGAGGCTCCCAGCACCTGCCCAGGCTTCACCCATGGGGAGGCTGCTCGGAGGCCCGGCCTCCCCCTGCCCCTCCTCCTCCTCCACCAGCTTCTCCTCCTCTTCCTCTCCCACCTCCGGCGGCTGTGAACACGGCCTCTTCCCCTACGGCCACAGGGGCCCCTCCTCTAATGAGTGGTCGGACCGTGGGGAAGGGCCCCACTCAGGGATCTCAGACCTAGTGCTCCCTTCCTCCTCAAACCGAGAGACTCACACTGGACAGGGCAGGAGGAGGGGGCCGTGCCTCCCACCCTTCTCAGGGACCCCCACGCCTTTGTTGTTTGAATGGAAATGGAAAAGCCAGTATTCTTTTTATAAAATTATCTTTTTGGAACCTGAGCCTGACATTGGGGGGAAGTGGGAGGCCGGACGGGTAGCACCCC</code></pre>
+<p>My first approach was plain OSINT, and after looking through search results and databases (<a href="https://pubmed.ncbi.nlm.nih.gov/?sort=date&amp;term=CGCTTCCTCCCCAAATTGCTCAGCGCCACCGGTATGCAGGGGCCAGCGGGCAGCGGCTGGGAGGAGGGGAGTGGGAGCCCGCCAGGTGTAACCCCTCTCTTCTCCCCCTAGCCTCGGAGGCTCCCAGCACCTGCCCAGGCTTCACCCATGGGGAGGCTGCTCGGAGGCCCGGCCTCCCCCTGCCCCTCCTCCTCCTCCACCAGCTTCTCCTCCTCTTCCTCTCCCACCTCCGGCGGCTGTGAACACGGCCTCTTCCCCTACGGCCACAGGGGCCCCTCCTCTAATGAGTGGTCGGACCGTGGGGAAGGGCCCCACTCAGGGATCTCAGACCTAGTGCTCCCTTCCTCCTCAAACCGAGAGACTCACACTGGACAGGGCAGGAGGAGGGGGCCGTGCCTCCCACCCTTCTCAGGGACCCCCACGCCTTTGTTGTTTGAATGGAAATGGAAAAGCCAGTATTCTTTTTATAAAATTATCTTTTTGGAACCTGAGCCTGACATTGGGGGGAAGTGGGAGGCCGGACGGGTAGCACCCC">far</a> <a href="https://www.brenda-enzymes.org/fulltext.php?Searchterm=CGCTTCCTCCCCAAATTGCTCAGCGCCACCGGTATGCAGGGGCCAGCGGGCAGCGGCTGGGAGGAGGGGAGTGGGAGCCCGCCAGGTGTAACCCCTCTCTTCTCCCCCTAGCCTCGGAGGCTCCCAGCACCTGCCCAGGCTTCACCCATGGGGAGGCTGCTCGGAGGCCCGGCCTCCCCCTGCCCCTCCTCCTCCTCCACCAGCTTCTCCTCCTCTTCCTCTCCCACCTCCGGCGGCTGTGAACACGGCCTCTTCCCCTACGGCCACAGGGGCCCCTCCTCTAATGAGTGGTCGGACCGTGGGGAAGGGCCCCACTCAGGGATCTCAGACCTAGTGCTCCCTTCCTCCTCAAACCGAGAGACTCACACTGGACAGGGCAGGAGGAGGGGGCCGTGCCTCCCACCCTTCTCAGGGACCCCCACGCCTTTGTTGTTTGAATGGAAATGGAAAAGCCAGTATTCTTTTTATAAAATTATCTTTTTGGAACCTGAGCCTGACATTGGGGGGAAGTGGGAGGCCGGACGGGTAGCACCCC&amp;stype=2&amp;compl_db=on&amp;tables%5B%5D=1&amp;tables%5B%5D=32&amp;tables%5B%5D=2&amp;tables%5B%5D=3&amp;tables%5B%5D=4&amp;tables%5B%5D=48&amp;tables%5B%5D=5&amp;tables%5B%5D=6&amp;tables%5B%5D=7&amp;tables%5B%5D=8&amp;tables%5B%5D=9&amp;tables%5B%5D=301&amp;tables%5B%5D=302&amp;tables%5B%5D=10&amp;tables%5B%5D=54&amp;tables%5B%5D=11&amp;tables%5B%5D=305&amp;tables%5B%5D=55&amp;tables%5B%5D=49&amp;tables%5B%5D=12&amp;tables%5B%5D=13&amp;tables%5B%5D=14&amp;tables%5B%5D=15&amp;tables%5B%5D=16&amp;tables%5B%5D=51&amp;tables%5B%5D=50&amp;tables%5B%5D=17&amp;tables%5B%5D=19&amp;tables%5B%5D=20&amp;tables%5B%5D=21&amp;tables%5B%5D=22&amp;tables%5B%5D=23&amp;tables%5B%5D=45&amp;tables%5B%5D=46&amp;tables%5B%5D=47&amp;tables%5B%5D=53&amp;tables%5B%5D=24&amp;tables%5B%5D=25&amp;tables%5B%5D=26&amp;tables%5B%5D=27&amp;tables%5B%5D=28&amp;tables%5B%5D=29&amp;tables%5B%5D=30&amp;tables%5B%5D=31&amp;tables%5B%5D=33&amp;tables%5B%5D=34&amp;tables%5B%5D=35&amp;tables%5B%5D=36&amp;tables%5B%5D=37&amp;tables%5B%5D=38&amp;tables%5B%5D=39&amp;tables%5B%5D=40&amp;tables%5B%5D=41&amp;tables%5B%5D=42&amp;tables%5B%5D=43&amp;tables%5B%5D=44&amp;tables%5B%5D=100">too</a> <a href="https://rnacentral.org/rna/URS00001A964C/1198627">many</a> databases), I reread the challenge title and focused on the <a href="https://www.ebi.ac.uk/Tools/sss/ncbiblast/">EMBL-EBI BLAST</a> database. After looking around the website for a bit, I ended up just querying all of the relevant databases and after around 15 minutes of “panicking” that the query would take days, I got a match, receiving my flag: <code>X-MAS{acetylcholinesterase}</code>.</p>
+<h3 id="a-putative-sequence">A Putative Sequence</h3>
+<p>The request in this challenge was to find spike glycoprotein (as a polypeptide) from the SARS‑CoV‑2 B.1.617.1 lineage, not including the stop codon. This was done with more OSINT (I see why it’s called bioinformatics now), initially with the website of <a href="https://www.ecdc.europa.eu/en/covid-19/variants-concern">European Centers of Disease Control</a>, then to pleasantly reliable <a href="https://en.wikipedia.org/wiki/SARS-CoV-2_Kappa_variant">wikipedia</a>. From there I recovered the main mutations: <code>L452R</code>, <code>D614G</code>, <code>P681R</code>, <code>E154K</code>, <code>Q1071H</code> and <code>E484Q</code>. I then had to painfully try to figure out how to apply them manually (I found <a href="http://www.hgmd.cf.ac.uk/docs/mut_nom.html">this</a> site useful). By manually I mean in a python3 REPL using string indices…</p>
+<p>After doing that, I submitted the flag. FAIL. Turns out I was missing some mutations (<code>G142D</code> and <code>T95I</code>), using the right column of the below wikipedia table, which was missing the mutations shown in the <a href="https://covdb.stanford.edu/page/mutation-viewer/#sec_kappa">stanford-sourced visualisation</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Nucleotide</th>
+<th>Amino acid</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Spike</td>
+<td>T21895C</td>
+<td>-</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>T21895C</td>
+<td>E154K</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>T22917G</td>
+<td>L452R</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>G23012C</td>
+<td>E484Q</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>D614G</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>C23604G</td>
+<td>P681R</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>Q1071H</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img src="../cdn/mutations.png" title="mutations" alt="mutation" /><figcaption aria-hidden="true">mutation</figcaption>
+</figure>
+<p>After finally getting all 8 mutations and substituting them into the given amino acid, I was left with the flag:</p>
+<pre><code>X-MAS{
+MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVT
+WFHAIHVSGTNGTKRFDNPVLPFNDGVYFASIEKSNIIRGWIFGTTLDSKTQSLLIVNNATNV
+VIKVCEFQFCNDPFLDVYYHKNNKSWMKSEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNL
+REFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPG
+DSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQT
+SNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFK
+CYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNL
+DSKVGGNYNYRYRLFRKSNLKPFERDISTEIYQAGSTPCNGVQGFNCYFPLQSYGFQPTNGVG
+YQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGR
+DIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQGVNCTEVPVAIHADQLT
+PTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSRRRARSVASQSII
+AYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQY
+GSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIE
+DLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTI
+TSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASAL
+GKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYV
+TQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAH
+EKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVN
+NTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESL
+IDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDD
+SEPVLKGVKLHYT}</code></pre>
+<h2 id="forensics">Forensics</h2>
+<p>Given a pcap, find the flag. Pretty typical forensics challenge, honestly. I opened the pcap in termshark (I like minimalism and terminal apps and in this case wasn’t sacrificing functionality), and did a quick search for <code>X-MAS{</code> because sometimes it’s that easy. Spoiler: this time it wasn’t.</p>
+<figure>
+<img src="../cdn/termshark.png" title="termshark" alt="termshark" /><figcaption aria-hidden="true">termshark</figcaption>
+</figure>
+<p>So I conducted a somewhat deeper (but still quite shallow) analysis, noting that the pcap consited of a TCP stream between 2 IPs, and that there was no readable ascii. I decided to try reading the pcap without termshark (so that certain parts aren’t hidden by text encoding and the program deciding whether or not it wants to show me data - I wanted more control), so I ran it through <code>strings</code>, redirecting into a file which I scrolled through quickly to see if there was anything suspicious (doing some cleanup of duplicate lines as well)… and there was in fact something.</p>
+<p>At the very end of the file, a few lines caught my eye</p>
+<pre><code>[12;1HPlease enter the flag fragment (flagment) to continue (10/10). 
+Your hint is &quot;ef&quot; &gt;&gt; 
+#(vI
+#(vI
+|S@vI
+Thank you!
+You sent: ###################### (redacted for security reasons).
+Goodbye.</code></pre>
+<p>Through a quick search of <code>/10)</code> I found the rest of the fragments, and was left with this:</p>
+<pre><code>[12;1HPlease enter the flag fragment (flagment) to continue (1/10). 
+Your hint is &quot;X-&quot; &gt;&gt; z
+[12;1HPlease enter the flag fragment (flagment) to continue (2/10). 
+Your hint is &quot;AS&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (3/10). 
+Your hint is &quot;u_&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (4/10). 
+Your hint is &quot;K4&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (5/10). 
+Your hint is &quot;th&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (6/10). 
+Your hint is &quot;d3&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (7/10). 
+Your hint is &quot;af&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (8/10). 
+Your hint is &quot;03&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (9/10). 
+Your hint is &quot;81&quot; &gt;&gt;
+[12;1HPlease enter the flag fragment (flagment) to continue (10/10). 
+Your hint is &quot;ef&quot; &gt;&gt;</code></pre>
+<p>Putting that data together left me with an incomplete string that didn’t appear to match up with the supposed length of the flag (from <code>You sent: ######################</code>). I knew I was missing something, but I wasn’t sure what.</p>
+<pre><code>## ## ## ## ## ## ## ## ## ## ##
+X- AS u_ K4 th d3 af 03 81 ef</code></pre>
+<p>After some head-banging-on-my-desk, I realised my lack of characters could have been caused by encoding issues (sigh) so I tried various ways of recovering data (cyberchef, hexed.it, file) but they all failed. I’m fairly certain there were intended to be pieces of data following the <code>&gt;&gt;</code> in the capture, but I couldn’t seem to get them to present as anything useful so /shrug. This challenge was unnecessarily painful for me so I tried not to waste too much time on it, which brings me to my favorite problem, one that had me thinking about design and math and o-notation … programming!</p>
+<h2 id="programming">Programming</h2>
