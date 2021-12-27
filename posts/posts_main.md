@@ -15,3 +15,5 @@
 
 \> [Bash Aliases for Productivity](finished/Bash Aliases for Productivity.html) || 2021-12-25 14:39:34
 
+\> [X-MAS CTF 2021 Writeups.md](finished/X-MAS CTF 2021 Writeups.md.html) || 
+

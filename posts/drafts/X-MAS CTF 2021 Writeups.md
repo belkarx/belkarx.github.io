@@ -114,6 +114,81 @@ X- AS u_ K4 th d3 af 03 81 ef
 After some head-banging-on-my-desk, I realised my lack of characters could have been caused by encoding issues (sigh) so I tried various ways of recovering data (cyberchef, hexed.it, file) but they all failed. I'm fairly certain there were intended to be pieces of data following the `>>` in the capture, but I couldn't seem to get them to present as anything useful so /shrug. This challenge was unnecessarily painful for me so I tried not to waste too much time on it, which brings me to my favorite problem, one that had me thinking about design and math and o-notation ... programming!
 
 ## Programming
+This problem was a fun Chrismas-themed prime puzzle, with stringent time constraints.
+
+The description (paraphrased):
+> In the North Pole there are two elements: Naughtyium and Niceium. Naughtium has a prime number of neutrons, while Nicium's count is composite. Given a collection of numbers (prime and composite), find the Nth possible combination of Naughtium and Niceium (one prime and one composite) [Nth with respect to ascendant value order]
+
+My first approach involved a basic prototype in Python to get used to the infrastructure. I pulled the numbers and N from the TCP socket and ran them through an unoptimized and naive primality testing function. This got me through 5 of the ten challenges in the alloted time (120 seconds). 
+
+```python
+from pwn import *
+
+def is_prime(n): 
+    for i in range(2, int(math.sqrt(n))):
+        if (n%i==0):
+            return False
+    return True
+
+conn = remote("challs.xmas.htsp.ro", 5006)
 
 
+others=[]
+primes=[]
+i = 0
 
+conn.recvline()
+conn.recvline()
+conn.recvline()
+
+while(True):
+    line = conn.recvline().decode()
+    #print(line)
+
+    if "numbers" in line:
+        line = line.replace("numbers = [", "").replace("]\n", "")
+        nums = [int(x) for x in line.split(", ")]
+        #print("NUMS="+str(nums))
+    elif "queries" in line:
+        line = line.replace("queries = [", "").replace("]\n", "")
+        queries= [int(x) for x in line.split(", ")]
+        #print("QUERIES="+str(queries))
+        for num in nums:
+            if is_prime(num):
+                primes.append(num)
+            else:
+                others.append(num)
+
+        print("DONE")
+        ultimate = []
+        for x in primes:
+            for y in others:
+                ultimate.append(x+y)
+
+        ultimate.sort()
+        ans = ""
+        for x in queries:
+            ans += str(ultimate[x-1]) + ", "
+            
+        ans = ans[:-2] 
+        #print(ans)
+        conn.sendline(ans)
+        conn.recvline()
+
+        others = []
+        primes = []
+
+conn.close()
+```
+
+I noticed that the number sets started out relatively small and in small groups, but very quickly ramped up in volume, value, and therefore difficulty, and that my program quite clearly wasn't able to handle that. I then looked into just getting a collection of the top 100,000 primes and loading them into a dict to have O(n) prime-testing time, however I misread the constraints and I would have needed the top 1,000,000 primes, which wasn't a viable approach (though programmatically generating them as opposed to downloading and reading them (which probably would have been faster) was something that remained in the back of my mind).
+
+I did a [fair](https://en.wikipedia.org/wiki/Primality_test) [amount](https://stackoverflow.com/questions/4424374/determining-if-a-number-is-prime) of [research](https://www.google.com/search?q=prime+sieve+rust) in an attempt to find a faster prime function, but the basic improvements I implemented were still not good enough. I also benchmarked and realised that as the size of the sets increased, programmatically adding *all* of the primes and composites was a bottleneck, and also that it would likely become necessary to write the program in a compiled language so that interpreter overhead wasn't making my life more difficult. I began an implementation of Erathmuses' sieve but quickly got pulled into researching probablistic primality tests.
+
+I also tried writing the program in Rust and improving (decreasing) the number of necessary addition instructions, but that was unsuccessful. Ultimately my completion of this task remained theoretical, as I ran out of time to get something optimized working.
+
+I'm writing this after the challenge's end, and looking back I should have written it in c/cpp, leveraging someone else's optimized [code](https://github.com/kimwalisch/primesieve) (seeing as this is a CTF not a programming challenge) for the "difficult parts", however I'm still not sure if there are any ctf or networking libraries that would simplify reading from the TCP socket.
+
+I had yet to see a writeup for this challenge, so I messaged the creator and apparently it was based on a problem proposal for the Romanian IOI (International Olympiad of Informatics). I obtained a copy of the original problem for the purpose of perusual of different strategies and point values for each, and am hosting it [here](../cdn/xmas-ctf-programming.pdf).
+
+Overall I quite enjoyed the problem and wish I had more time to hack on it, as getting that probablistic test (and subsequent optimized addition/searching of the identified values) working would have been interesting.
