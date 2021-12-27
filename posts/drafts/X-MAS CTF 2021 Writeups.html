@@ -136,3 +136,69 @@ Your hint is &quot;ef&quot; &gt;&gt;</code></pre>
 X- AS u_ K4 th d3 af 03 81 ef</code></pre>
 <p>After some head-banging-on-my-desk, I realised my lack of characters could have been caused by encoding issues (sigh) so I tried various ways of recovering data (cyberchef, hexed.it, file) but they all failed. I’m fairly certain there were intended to be pieces of data following the <code>&gt;&gt;</code> in the capture, but I couldn’t seem to get them to present as anything useful so /shrug. This challenge was unnecessarily painful for me so I tried not to waste too much time on it, which brings me to my favorite problem, one that had me thinking about design and math and o-notation … programming!</p>
 <h2 id="programming">Programming</h2>
+<p>This problem was a fun Chrismas-themed prime puzzle, with stringent time constraints.</p>
+<p>The description (paraphrased): &gt; In the North Pole there are two elements: Naughtyium and Niceium. Naughtium has a prime number of neutrons, while Nicium’s count is composite. Given a collection of numbers (prime and composite), find the Nth possible combination of Naughtium and Niceium (one prime and one composite) [Nth with respect to ascendant value order]</p>
+<p>My first approach involved a basic prototype in Python to get used to the infrastructure. I pulled the numbers and N from the TCP socket and ran them through an unoptimized and naive primality testing function. This got me through 5 of the ten challenges in the alloted time (120 seconds).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pwn <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_prime(n): </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="bu">int</span>(math.sqrt(n))):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (n<span class="op">%</span>i<span class="op">==</span><span class="dv">0</span>):</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> remote(<span class="st">&quot;challs.xmas.htsp.ro&quot;</span>, <span class="dv">5006</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>others<span class="op">=</span>[]</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>primes<span class="op">=</span>[]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>conn.recvline()</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>conn.recvline()</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>conn.recvline()</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="va">True</span>):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    line <span class="op">=</span> conn.recvline().decode()</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print(line)</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">&quot;numbers&quot;</span> <span class="kw">in</span> line:</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> line.replace(<span class="st">&quot;numbers = [&quot;</span>, <span class="st">&quot;&quot;</span>).replace(<span class="st">&quot;]</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        nums <span class="op">=</span> [<span class="bu">int</span>(x) <span class="cf">for</span> x <span class="kw">in</span> line.split(<span class="st">&quot;, &quot;</span>)]</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">#print(&quot;NUMS=&quot;+str(nums))</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="st">&quot;queries&quot;</span> <span class="kw">in</span> line:</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> line.replace(<span class="st">&quot;queries = [&quot;</span>, <span class="st">&quot;&quot;</span>).replace(<span class="st">&quot;]</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        queries<span class="op">=</span> [<span class="bu">int</span>(x) <span class="cf">for</span> x <span class="kw">in</span> line.split(<span class="st">&quot;, &quot;</span>)]</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">#print(&quot;QUERIES=&quot;+str(queries))</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> num <span class="kw">in</span> nums:</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> is_prime(num):</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>                primes.append(num)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>                others.append(num)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;DONE&quot;</span>)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        ultimate <span class="op">=</span> []</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> x <span class="kw">in</span> primes:</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> y <span class="kw">in</span> others:</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>                ultimate.append(x<span class="op">+</span>y)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>        ultimate.sort()</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        ans <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> x <span class="kw">in</span> queries:</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>            ans <span class="op">+=</span> <span class="bu">str</span>(ultimate[x<span class="op">-</span><span class="dv">1</span>]) <span class="op">+</span> <span class="st">&quot;, &quot;</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        ans <span class="op">=</span> ans[:<span class="op">-</span><span class="dv">2</span>] </span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        <span class="co">#print(ans)</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        conn.sendline(ans)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        conn.recvline()</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        others <span class="op">=</span> []</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        primes <span class="op">=</span> []</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>conn.close()</span></code></pre></div>
+<p>I noticed that the number sets started out relatively small and in small groups, but very quickly ramped up in volume, value, and therefore difficulty, and that my program quite clearly wasn’t able to handle that. I then looked into just getting a collection of the top 100,000 primes and loading them into a dict to have O(n) prime-testing time, however I misread the constraints and I would have needed the top 1,000,000 primes, which wasn’t a viable approach (though programmatically generating them as opposed to downloading and reading them (which probably would have been faster) was something that remained in the back of my mind).</p>
+<p>I did a <a href="https://en.wikipedia.org/wiki/Primality_test">fair</a> <a href="https://stackoverflow.com/questions/4424374/determining-if-a-number-is-prime">amount</a> of <a href="https://www.google.com/search?q=prime+sieve+rust">research</a> in an attempt to find a faster prime function, but the basic improvements I implemented were still not good enough. I also benchmarked and realised that as the size of the sets increased, programmatically adding <em>all</em> of the primes and composites was a bottleneck, and also that it would likely become necessary to write the program in a compiled language so that interpreter overhead wasn’t making my life more difficult. I began an implementation of Erathmuses’ sieve but quickly got pulled into researching probablistic primality tests.</p>
+<p>I also tried writing the program in Rust and improving (decreasing) the number of necessary addition instructions, but that was unsuccessful. Ultimately my completion of this task remained theoretical, as I ran out of time to get something optimized working.</p>
+<p>I’m writing this after the challenge’s end, and looking back I should have written it in c/cpp, leveraging someone else’s optimized <a href="https://github.com/kimwalisch/primesieve">code</a> (seeing as this is a CTF not a programming challenge) for the “difficult parts”, however I’m still not sure if there are any ctf or networking libraries that would simplify reading from the TCP socket.</p>
+<p>I had yet to see a writeup for this challenge, so I messaged the creator and apparently it was based on a problem proposal for the Romanian IOI (International Olympiad of Informatics). I obtained a copy of the original problem for the purpose of perusual of different strategies and point values for each, and am hosting it <a href="../cdn/xmas-ctf-programming.pdf">here</a>.</p>
+<p>Overall I quite enjoyed the problem and wish I had more time to hack on it, as getting that probablistic test (and subsequent optimized addition/searching of the identified values) working would have been interesting.</p>

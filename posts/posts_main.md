@@ -17,3 +17,5 @@
 
 \> [X-MAS CTF 2021 Writeups.md](finished/X-MAS CTF 2021 Writeups.md.html) || 
 
+\> [X-MAS CTF 2021 Writeups](finished/X-MAS CTF 2021 Writeups.html) || 
+
