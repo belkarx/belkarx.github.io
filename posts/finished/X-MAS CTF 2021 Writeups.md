@@ -117,6 +117,7 @@ After some head-banging-on-my-desk, I realised my lack of characters could have 
 This problem was a fun Chrismas-themed prime puzzle, with stringent time constraints.
 
 The description (paraphrased):
+
 > In the North Pole there are two elements: Naughtyium and Niceium. Naughtium has a prime number of neutrons, while Nicium's count is composite. Given a collection of numbers (prime and composite), find the Nth possible combination of Naughtium and Niceium (one prime and one composite) [Nth with respect to ascendant value order]
 
 My first approach involved a basic prototype in Python to get used to the infrastructure. I pulled the numbers and N from the TCP socket and ran them through an unoptimized and naive primality testing function. This got me through 5 of the ten challenges in the alloted time (120 seconds). 

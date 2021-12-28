@@ -137,7 +137,10 @@ X- AS u_ K4 th d3 af 03 81 ef</code></pre>
 <p>After some head-banging-on-my-desk, I realised my lack of characters could have been caused by encoding issues (sigh) so I tried various ways of recovering data (cyberchef, hexed.it, file) but they all failed. I’m fairly certain there were intended to be pieces of data following the <code>&gt;&gt;</code> in the capture, but I couldn’t seem to get them to present as anything useful so /shrug. This challenge was unnecessarily painful for me so I tried not to waste too much time on it, which brings me to my favorite problem, one that had me thinking about design and math and o-notation … programming!</p>
 <h2 id="programming">Programming</h2>
 <p>This problem was a fun Chrismas-themed prime puzzle, with stringent time constraints.</p>
-<p>The description (paraphrased): &gt; In the North Pole there are two elements: Naughtyium and Niceium. Naughtium has a prime number of neutrons, while Nicium’s count is composite. Given a collection of numbers (prime and composite), find the Nth possible combination of Naughtium and Niceium (one prime and one composite) [Nth with respect to ascendant value order]</p>
+<p>The description (paraphrased): 
+<blockquote>
+<p>In the North Pole there are two elements: Naughtyium and Niceium. Naughtium has a prime number of neutrons, while Nicium’s count is composite. Given a collection of numbers (prime and composite), find the Nth possible combination of Naughtium and Niceium (one prime and one composite) [Nth with respect to ascendant value order]</p>
+</blockquote>
 <p>My first approach involved a basic prototype in Python to get used to the infrastructure. I pulled the numbers and N from the TCP socket and ran them through an unoptimized and naive primality testing function. This got me through 5 of the ten challenges in the alloted time (120 seconds).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pwn <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
