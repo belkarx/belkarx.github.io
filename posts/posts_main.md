@@ -17,3 +17,5 @@
 
 \> [X-MAS CTF 2021 Writeups](finished/X-MAS CTF 2021 Writeups.html) || 2021-12-26 18:31:11
 
+\> [Impacts Of Lack Of Sleep](finished/Impacts Of Lack Of Sleep.html) || 2022-02-02 14:06:26
+
