@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>placeholder</title>
+  <link rel="stylesheet" href="../css.css">
+  <header><p><a href=../../index.html>home/about-me</a> | <a href=../posts_main.html>posts</a></p></header>
+</head>
+<h1 id="h-ctf-writeup">24@h CTF Writeup</h1>
+<p>I admittedly did not put much effort into this CTF but it was fun nonetheless and writeups were spectacular (especially for pwn/reversing).</p>
+<h2 id="web">Web</h2>
+<p>There was a flag in <code>robots.txt</code></p>
+<h2 id="programming">Programming</h2>
+<h3 id="challenge">Challenge</h3>
+<blockquote>
+<p>Can you detect fraud in bank transactions? Here is the problem: we have a dataset that contains 50 examples of transactions that are labeled according to whether they are fraud or not. For each of them, we will send you the list of features that we collected and its label.</p>
+</blockquote>
+<blockquote>
+<p>Here are the features we are talking about, in order:</p>
+</blockquote>
+<blockquote>
+<p>Amount of money being transferred Number of past failed transactions (originator account) Number of past failed transactions (destination account) Geographical distance between originator and destination Number of transactions per week (originator account) We will send you 10 new unlabeled transactions. Your goal is to detect which of them are fraud using the dataset as a reference. You have 10 seconds from when you receive the data to send back your answer.</p>
+</blockquote>
+<h3 id="approach">Approach</h3>
+<p>The presence of features and outputs immediately led me to machine learning as a potential solution, and I was reminded of <a href="https://iamtrask.github.io/2015/07/12/basic-python-network/">this article</a> as it had a simple way to map a collection of numerical inputs to outputs. After trying to get the base code found there to work with the vectors available to me (I dumped them into a local text file so there was no latency from the server for experimentation), I realized 1) I needed to normalize the values <code>python     norms = np.linalg.norm(inputs)     inputs /= norms</code> 2) The synapse (neural network weights) layer needed to be of a different size (initialized with a std-deviation of 1 and mean of 0 because apparently it’s the most optimized way) <code>python     syn0 = 2*np.random.random((5,50)) - 1</code> I didn’t manage to make this work, even though it should have, in theory. “<code>ValueError: non-broadcastable output operand with shape (5,1) doesn't match the broadcast shape (X,y)</code>” had me figuratively banging my head against my desk, as I tried changing values around.</p>
+<p>I later recognzied linear regression as a solution vector (though in hindsight I should have visualized the data first), and decided to have fun and try to implement it manually. While linear regression with a single input and output is simple, turns out it gets quite complicated with vectors. Long story short I couldn’t force that to work either.</p>
+<p>So I gave in and used sklearn:</p>
+<p>…</p>
+<h3 id="final-code">Final Code</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 24@h CTF Writeup</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>I admittedly did <span class="kw">not</span> put much effort into this CTF but it was fun nonetheless <span class="kw">and</span> writeups were spectacular (especially <span class="cf">for</span> pwn<span class="op">/</span>reversing).</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Web</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>There was a flag <span class="kw">in</span> `robots.txt`</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Programming</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">### Challenge</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> Can you detect fraud <span class="kw">in</span> bank transactions? Here <span class="kw">is</span> the problem: we have a dataset that contains <span class="dv">50</span> examples of transactions that are labeled according to whether they are fraud <span class="kw">or</span> <span class="kw">not</span>. For each of them, we will send you the <span class="bu">list</span> of features that we collected <span class="kw">and</span> its label.</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> Here are the features we are talking about, <span class="kw">in</span> order:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> Amount of money being transferred Number of past failed transactions (originator account) Number of past failed transactions (destination account) Geographical distance between originator <span class="kw">and</span> destination Number of transactions per week (originator account) We will send you <span class="dv">10</span> new unlabeled transactions. Your goal <span class="kw">is</span> to detect which of them are fraud using the dataset <span class="im">as</span> a reference. You have <span class="dv">10</span> seconds <span class="im">from</span> when you receive the data to send back your answer.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">### Approach</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>The presence of features <span class="kw">and</span> outputs immediately led me to machine learning <span class="im">as</span> a potential solution, <span class="kw">and</span> I was reminded of [this article](https:<span class="op">//</span>iamtrask.github.io<span class="op">/</span><span class="dv">2015</span><span class="op">/</span><span class="dv">0</span><span class="er">7</span><span class="op">/</span><span class="dv">12</span><span class="op">/</span>basic<span class="op">-</span>python<span class="op">-</span>network<span class="op">/</span>) <span class="im">as</span> it had a simple way to <span class="bu">map</span> a collection of numerical inputs to outputs. After trying to get the base code found there to work <span class="cf">with</span> the vectors available to me (I dumped them into a local text <span class="bu">file</span> so there was no latency <span class="im">from</span> the server <span class="cf">for</span> experimentation), I realized </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>) I needed to normalize the values</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>   ```python</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    norms <span class="op">=</span> np.linalg.norm(inputs)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">/=</span> norms</span></code></pre></div>
+<ol start="2" type="1">
+<li>The synapse (neural network weights) layer needed to be of a different size (initialized with a std-deviation of 1 and mean of 0 because apparently it’s the most optimized way) <code>python     syn0 = 2*np.random.random((5,50)) - 1</code> I didn’t manage to make this work, even though it should have, in theory. <code>ValueError: non-broadcastable output operand with shape (5,1) doesn't match the broadcast shape (X,y)</code> had me figuratively banging my head against my desk, as I tried changing values around.</li>
+</ol>
+<p>I later recognzied linear regression as a solution vector (though in hindsight I should have visualized the data first), and decided to have fun and try to implement it manually. While linear regression with a single input and output is simple, turns out it gets quite complicated with vectors. Long story short I couldn’t force that to work either.</p>
+<p>So I gave in and used scikitlearn:</p>
+<p>…</p>
+<h3 id="final-code-1">Final Code</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pwn <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> linear_model</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> remote(<span class="st">&quot;0.cloud.chals.io&quot;</span>, <span class="dv">32947</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">#absorb useless lines</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    conn.recvline()</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    conn.recvline()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> []</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    outputs <span class="op">=</span> []</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>):</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> conn.recvline().decode()</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">#get all features</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        inputs.append([<span class="bu">int</span>(y) <span class="cf">for</span> y <span class="kw">in</span> re.findall(<span class="st">&#39;[0-9]+&#39;</span>, line)])</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="co">#get dependent variable</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        outputs.append(<span class="dv">1</span> <span class="cf">if</span> line.split(<span class="st">&quot;: &quot;</span>)[<span class="op">-</span><span class="dv">1</span>].strip() <span class="op">==</span> <span class="st">&quot;yes&quot;</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;inputs&quot;</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(inputs)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;outputs&quot;</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(outputs)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">#absorb useless lines again</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    conn.recvline()</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    conn.recvline()</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> []</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> conn.recvline().decode()</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        test.append([<span class="bu">int</span>(y) <span class="cf">for</span> y <span class="kw">in</span> re.findall(<span class="st">&#39;[0-9]+&#39;</span>, line[<span class="dv">2</span>:])])</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;test&quot;</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(test)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">#does this only need to be done once?</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">    CHANGE THIS</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    regr <span class="op">=</span> linear_model.LinearRegression()</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    regr.fit(np.array(inputs), np.array(outputs).T)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gets the result, given a set of features from test</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> test:</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        results.append(<span class="bu">round</span>(regr.predict(np.array(x).reshape((<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)))[<span class="dv">0</span>]))</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;results&quot;</span>)</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(results)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">#idk if i need to absorb this but worth a shot since it&#39;s crashing right about here</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    conn.recvline()</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="co">#send!</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="co">#hahhaaa turns out I need an array of the ones that are fraud</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    answer <span class="op">=</span> []</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> results[x] <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>            answer.append(x)</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    conn.sendline(<span class="bu">str</span>(answer))</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(conn.recvline())</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(conn.recvline())</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(conn.recvline())</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(conn.recvline())</span></code></pre></div>
+<h3 id="results">Results</h3>
+<p><code>Good job! Here is your flag: FLAG{H0w_C4n_u_l34Rn_fr0m_ur_Mi5t4K3s_iF_u_c4nT_r3mEMb3r_Th3m}</code></p>

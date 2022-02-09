@@ -21,3 +21,5 @@
 
 \> [Rust Copypasta](finished/Rust Copypasta.html) || 2022-02-08 17:53:59
 
+\> [24@h CTF Writeups](finished/24@h CTF Writeups.html) || 2022-02-09 15:50:35
+
