@@ -14,55 +14,25 @@ There was a flag in `robots.txt`
 
 ### Approach
 The presence of features and outputs immediately led me to machine learning as a potential solution, and I was reminded of [this article](https://iamtrask.github.io/2015/07/12/basic-python-network/) as it had a simple way to map a collection of numerical inputs to outputs. After trying to get the base code found there to work with the vectors available to me (I dumped them into a local text file so there was no latency from the server for experimentation), I realized 
+
 1) I needed to normalize the values
+
    ```python
     norms = np.linalg.norm(inputs)
     inputs /= norms
    ``` 
+
 2) The synapse (neural network weights) layer needed to be of a different size (initialized with a std-deviation of 1 and mean of 0 because apparently it's the most optimized way)
+
     ```python
     syn0 = 2*np.random.random((5,50)) - 1
     ```
-    I didn't manage to make this work, even though it should have, in theory. "`ValueError: non-broadcastable output operand with shape (5,1) doesn't match the broadcast shape (X,y)`" had me figuratively banging my head against my desk, as I tried changing values around.
 
-I later recognzied linear regression as a solution vector (though in hindsight I should have visualized the data first), and decided to have fun and try to implement it manually. While linear regression with a single input and output is simple, turns out it gets quite complicated with vectors. Long story short I couldn't force that to work either. 
+I didn't manage to make this work, even though it should have, in theory. "`ValueError: non-broadcastable output operand with shape (5,1) doesn't match the broadcast shape (X,y)`" had me figuratively banging my head against my desk, as I tried changing values around.
 
-So I gave in and used sklearn:
+I later recognized linear regression as a solution vector (though in hindsight I should have visualized the data first), and decided to have fun and try to implement it manually. While linear regression with a single input and output is simple, turns out it gets quite complicated with vectors. Long story short I couldn't force that to work either. 
 
-...
-
-### Final Code
-```python
-# 24@h CTF Writeup
-I admittedly did not put much effort into this CTF but it was fun nonetheless and writeups were spectacular (especially for pwn/reversing).
-
-## Web
-There was a flag in `robots.txt`
-
-## Programming
-### Challenge
-> Can you detect fraud in bank transactions? Here is the problem: we have a dataset that contains 50 examples of transactions that are labeled according to whether they are fraud or not. For each of them, we will send you the list of features that we collected and its label.
-
-> Here are the features we are talking about, in order:
-
-> Amount of money being transferred Number of past failed transactions (originator account) Number of past failed transactions (destination account) Geographical distance between originator and destination Number of transactions per week (originator account) We will send you 10 new unlabeled transactions. Your goal is to detect which of them are fraud using the dataset as a reference. You have 10 seconds from when you receive the data to send back your answer.
-
-### Approach
-The presence of features and outputs immediately led me to machine learning as a potential solution, and I was reminded of [this article](https://iamtrask.github.io/2015/07/12/basic-python-network/) as it had a simple way to map a collection of numerical inputs to outputs. After trying to get the base code found there to work with the vectors available to me (I dumped them into a local text file so there was no latency from the server for experimentation), I realized 
-1) I needed to normalize the values
-   ```python
-    norms = np.linalg.norm(inputs)
-    inputs /= norms
-   ``` 
-2) The synapse (neural network weights) layer needed to be of a different size (initialized with a std-deviation of 1 and mean of 0 because apparently it's the most optimized way)
-    ```python
-    syn0 = 2*np.random.random((5,50)) - 1
-    ```
-    I didn't manage to make this work, even though it should have, in theory. `ValueError: non-broadcastable output operand with shape (5,1) doesn't match the broadcast shape (X,y)` had me figuratively banging my head against my desk, as I tried changing values around.
-
-I later recognzied linear regression as a solution vector (though in hindsight I should have visualized the data first), and decided to have fun and try to implement it manually. While linear regression with a single input and output is simple, turns out it gets quite complicated with vectors. Long story short I couldn't force that to work either. 
-
-So I gave in and used scikitlearn:
+So I gave in and used `scikit-learn`:
 
 ...
 
