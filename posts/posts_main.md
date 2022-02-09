@@ -23,3 +23,5 @@
 
 \> [Rust Copypasta.md](finished/Rust Copypasta.md.html) || 
 
+\> [Rust Copypasta](finished/Rust Copypasta.html) || 
+
