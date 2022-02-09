@@ -19,3 +19,5 @@
 
 \> [Impacts Of Lack Of Sleep](finished/Impacts Of Lack Of Sleep.html) || 2022-02-02 14:06:26
 
+\> [Rust Copypasta](finished/Rust Copypasta.html) || 
+
