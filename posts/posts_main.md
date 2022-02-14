@@ -23,3 +23,5 @@
 
 \> [24@h CTF Writeups](finished/24@h CTF Writeups.html) || 2022-02-09 15:50:35
 
+\> [jwt](finished/jwt.html) || 2022-02-13 17:29:23
+
