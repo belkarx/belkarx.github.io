@@ -23,5 +23,5 @@
 
 \> [24@h CTF Writeups](finished/24@h CTF Writeups.html) || 2022-02-09 15:50:35
 
-\> [A Hands-On Introduction to JWTs](finished/A Hands-On Introduction to JWTs.html) || 2022-02-13 17:33:34
+\> [Defcamp CTF Writeup (JWTs).md](finished/Defcamp CTF Writeup (JWTs).md.html) || 
 
