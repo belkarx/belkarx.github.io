@@ -23,7 +23,5 @@
 
 \> [24@h CTF Writeups](finished/24@h CTF Writeups.html) || 2022-02-09 15:50:35
 
-\> [Defcamp CTF Writeup (JWTs).md](finished/Defcamp CTF Writeup (JWTs).md.html) || 
-
 \> [Defcamp CTF Writeup (JWTs)](finished/Defcamp CTF Writeup (JWTs).html) || 2022-02-13 17:38:07
 
