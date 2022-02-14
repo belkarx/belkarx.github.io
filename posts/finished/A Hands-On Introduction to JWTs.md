@@ -1,3 +1,6 @@
+# Defcamp CTF Writeup
+Another singular writeup ... Oh well I'm still learning, the other challenges were rather complex but reading solutions was quite interesting.
+
 ## Problem
 Upon visiting the provided URL, we are presented initially with an "Access denied" html page.
 
