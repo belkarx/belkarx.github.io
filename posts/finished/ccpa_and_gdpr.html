@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://belkarx.matomo.cloud/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='//cdn.matomo.cloud/belkarx.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>CCPA and GDPR</title>
+    <link rel="stylesheet" href="../css.css">
+<header><p><a href=../../index.html>home/about-me</a> | <a href=../posts_main.html>posts</a></p></header>
+</head><body>
+<p>I am not a lawyer, this topic just interests me so I did some research and made a short index of a summary</p>
+<h2 id="into">Intro</h2>
+<p>There is no overarching federal data privacy regulation in the US, and “security” is maintained by a messy clump of narrow-scoped acts (most relevant being <a href="federal_privacy_acts.html">HIPPA, COPPA, and FTCA</a>). The CCPA (California Consumer Privacy Act) is a semi-valuable stone buried in the clump, an attempt at “privacy”, emulating the GDPR (General Data Privacy Regulation) of the European Union.</p>
+<h2 id="ccpa">CCPA</h2>
+<p>Protects personal data</p>
+<pre><code>Personal information is information that identifies, relates to, or could reasonably be linked with you or your household:
+Examples:
+- name
+- SSN
+- email address
+- e-commerce history
+- browsing history
+- anything else that could uniquely profile you
+- NOT to anonymized data</code></pre>
+<p>of California residents</p>
+<h3 id="rights">Rights</h3>
+<p>Under CCPA, citizens have rights to</p>
+<ul>
+<li>have personal information collected from them <strong>deleted</strong> (except that which is necessary for business operations)</li>
+<li>opt-out of having your data <strong>sold</strong></li>
+<li>know how your data is being <strong>processed</strong> (and how it is <em>intended</em> to be processed)
+<ul>
+<li>processing -&gt; <code>collection, recording, organisation, structuring, storage, adaptation or alteration, retrieval, consultation, use, disclosure by transmission, dissemination or otherwise making available, alignment or combination, restriction, erasure or destruction of personal data</code></li>
+</ul></li>
+<li>and of course, to know what the collected data <strong>is</strong></li>
+</ul>
+<p>You cannot be discriminated against for exercising your CCPA rights (you cannot be denied serives or provided inferior services)</p>
+<h3 id="who-must-comply">Who must comply</h3>
+<p>CCPA applies to businesses that</p>
+<ul>
+<li>have a gross annual revenue of 25M+, OR</li>
+<li>Process the data of more than 50k Californian entitities (devices, individuals or households), OR</li>
+<li>derive 50+% of their profit from <em>selling</em> personal data It does not apply to non-profits or researchers, and service providers do not have to comply; the business itself is responsible.</li>
+</ul>
+<h3 id="filing-requests">Filing Requests</h3>
+<ul>
+<li>Online form is not required, but email, toll-free number, or other free digital method to make requests must be provided</li>
+<li>Only an Attorney General can investigate-&gt;sue a company for violation of CCPA</li>
+</ul>
+<h3 id="other-notes">Other Notes</h3>
+<ul>
+<li>cannot collect data from those under 13-16 without personal/parental <em>opt-in</em></li>
+<li>penalty of up to 2.5k for each national violation, jumping to 7k in international cases</li>
+<li>to sue for data breaches, the adversary must have access to: cleartext first inital and last name, alongside
+<ul>
+<li>SSN/other government ID OR</li>
+<li>access to financial account OR</li>
+<li>medical/health information OR</li>
+<li>biometric data</li>
+</ul></li>
+</ul>
+<h2 id="gdpr">GDPR</h2>
+<p>Protects “personal data” (as broadly interpreted as possible)</p>
+<pre><code>The data subjects are identifiable if they can be directly or indirectly identified, especially by reference to an identifier such as:
+- a name
+- location data
+- online identifier
+- telephone
+- account data
+- appearance
+or one of several special characteristics, which expresses the 
+physical/physiological/genetic/mental/commercial/cultural/social identity of these individuals</code></pre>
+<p>of EU citizens. This only applies to EU citizens in EU countries, unless an international data processor is knowingly/intentionally (targetting them with their design/marketing) processing data of EU citizens regularly, at which point it may be held liable under the regulation. US surveillance practices have been specifically discussed <a href="https://blogs.microsoft.com/eupolicy/2022/03/25/eu-us-data-agreement-an-important-milestone-for-data-protection-microsoft-is-committed-to-doing-our-part/">recently</a>, conclusing that only <em>necessary</em> and <em>proportionate</em> data collection is allowed, and creating an independent court for review to redress violations.</p>
+<h3 id="rights-1">Rights</h3>
+<ul>
+<li>Right of <strong>access</strong> to data [in a “precise, transparent, comprehensible, and easily accessible” form]</li>
+<li>Right to be <strong>informed</strong> about your personal data, specifically including
+<ul>
+<li>Processing purpose</li>
+<li>Interests pursued in processing</li>
+<li>Source of information gathered</li>
+<li>Any other entities the data was transferred to</li>
+<li>Duration of storage</li>
+<li>Was it used in automated decision-making (ie profiling)</li>
+<li>Intention to transfer data to “third countries” (Non-EU countries)</li>
+</ul></li>
+<li>Right to be <strong>forgotten</strong>
+<ul>
+<li>Data must be removed once its <em>original</em> purpose is complete</li>
+</ul></li>
+</ul>
+<h3 id="complaints-and-penalities">Complaints and Penalities</h3>
+<ul>
+<li>If sensitive data processing is a core activity of the company or data-processing is particularly invasive to rights of the subjects, the processor must appoint a Data Protection Officer to whom GDPR-related complaints can be made</li>
+<li>Process to complain must be accessible</li>
+<li>Process looks like: <code>Go to Insitution/Data Protection Officer -&gt; Try to settle complaint with them, if not sufficient -&gt; European Data Protection Supervisor (government entity, may sue)</code></li>
+<li>Fines!
+<ul>
+<li>The fines must be “effective, proportionate and dissuasive for each individual case”</li>
+<li>Maximum fine is 20M euros or, in the case of an undertaking (every entity engaged in related economic activity), up to 4% of the combined global turnover for the preceding fiscal year</li>
+<li>European Union member states may also define additional national penalities for infringement of GDPR</li>
+</ul></li>
+</ul>
+<h3 id="other-notes-1">Other Notes</h3>
+<ul>
+<li>All processing must be consented to by the subject (opt-in, not implied), after being explained by the controller. The subject has the right to opt-out at any time, and the controller may not use the data for anything beyond the purposes explicitly consented to</li>
+<li>Data can be tranferred without explicit consent of the data subject (otherwise consent must be specifically acquired) to countries which have data laws of the same or better quality as the GDPR. These countries are Andorra, Argentina, Canada (only commercial organizations), Faroe Islands, Guernsey, Israel, Isle of Man, Jersey, New Zealand, Switzerland, Uruguay, Japan, the United Kingdom and South Korea. When transferring to non-secure countries, the controller has the obligation to ensure the data is properly protected, through legal clauses or certification of the data processing procedure</li>
+<li>The GDPR requires the difficult-to-define notion of “Privacy By Default”, or appropriate (“state of the art while having reasonable implementation costs”) data safeguards by design or default</li>
+<li>When data is transferred between a controller and processer, the controller defines the allowed processing and is responsible (makes a contract) for ensuring GDPR is complied with</li>
+<li>A data protection impact assessment must always be conducted when the processing could result in a high risk to the rights and freedoms of natural persons</li>
+<li>Encryption of data at rest is not strictly required but recommended to avoid fines associated with publicized data breaches</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<p>CCPA: <a href="https://leginfo.legislature.ca.gov">leginfo.ca.gov</a> | <a href="https://oag.ca.gov/privacy/ccpa">oag.ca.gov</a></p>
+<p>GDPR: <a href="https://gdpr-info.eu">gpdr-info.eu</a> | <a href="https://edps.europa.eu">edps.europa.eu</a> | <a href="https://ec.europa.eu/info/law/law-topic/data-protection/reform/what-constitutes-data-processing_en">ec.europa.eu</a></p>
+</body>
+</html>
