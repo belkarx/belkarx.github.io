@@ -25,3 +25,5 @@
 
 \> [Defcamp CTF Writeup (JWTs)](finished/Defcamp CTF Writeup (JWTs).html) || 2022-02-13 17:38:07
 
+\> [GPG Quickstart](finished/GPG Quickstart.html) || 2022-04-03 17:23:57
+
