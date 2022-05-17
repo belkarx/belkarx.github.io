@@ -31,3 +31,5 @@
 
 \> [Privacy is a Fun Game](finished/Privacy is a Fun Game.html) || 2022-04-04 17:15:36
 
+\> [Avoiding Burnout](finished/Avoiding Burnout.html) || 2022-05-16 18:34:22
+
