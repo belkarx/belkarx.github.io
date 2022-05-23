@@ -4,6 +4,7 @@ I actually had a team for this one; decided I'd learn more and of course be more
 I didn't actually solve this during competition-time, but I thought it was really interesting nonetheless.
 
 
+
 ## wah
 I put this in "interesting" because this was my first foray into pwn. Quite fun. Procedure: find offset of variable you can overflow from the instruction pointer, then overflow and overwrite the address it's pointing to (as that's what will execute).
 ```python
@@ -74,12 +75,6 @@ I love default bash tools (and Linux as a whole but that's not largely relevant 
 SimpleScreenRecorder + VLC ('e' to step forward a frame)
 
 !["Sometimes simple solutions are best"](../cdn/flash.png "Sometimes simple solutions are best")
-
-## Art Gallery
-The description immediately gave this away.
-> bosh left his image gallery service running.... quick, git all of his secrets before he deletes them!!!
-
-LFI with a git directory: `https://art-gallery.web.actf.co/gallery?member=../git/`
 
 ## Caesar and Desister
 One word: [dcode.fr](https://www.dcode.fr/caesar-cipher)
