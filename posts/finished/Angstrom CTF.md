@@ -1,9 +1,9 @@
 I actually had a team for this one; decided I'd learn more and of course be more successful with others so I acquired some help. These are the challenges I solved (organized from most interesting to least).
 
 ## logloglog
-I didn't actually solve this during competition-time, but I thought it was really interesting nonetheless.
+I didn't actually solve this during competition-time, but I thought it was really interesting nonetheless. It's a variation on the discrete log problem (so I tried and failed to bruteforce it using Pohlig-Hellman and baby-step giant-step). Turns out that doing discrete log mod 2^1024 (which was the scaling factor of the Proth prime) was the only thing necessary to bruteforce (as the answer is retained in the last 1024 bits without having to discrete log mod q (which is what I was doing), a large prime).
 
-
+[Official writeup here](https://hackmd.io/@lamchcl/rJgPUtgI5#log-log-log)
 
 ## wah
 I put this in "interesting" because this was my first foray into pwn. Quite fun. Procedure: find offset of variable you can overflow from the instruction pointer, then overflow and overwrite the address it's pointing to (as that's what will execute).
