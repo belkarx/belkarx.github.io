@@ -37,3 +37,5 @@
 
 \> [Angstrom CTF](finished/Angstrom CTF.html) || 2022-06-01 09:05:44
 
+\> [Ideal Basics of Education.md](finished/Ideal Basics of Education.md.html) || 
+
