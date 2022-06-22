@@ -39,3 +39,5 @@
 
 \> [Ideal Basics of Education.md](finished/Ideal Basics of Education.md.html) || 
 
+\> [Ideal Basics of Education](finished/Ideal Basics of Education.html) || 2022-06-21 23:21:07
+
