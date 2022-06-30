@@ -41,3 +41,5 @@
 
 \> [Ideal Basics of Education](finished/Ideal Basics of Education.html) || 2022-06-21 23:21:07
 
+\> [Low-level\Atypical Technology Fundamentals](finished/Low-level\Atypical Technology Fundamentals.html) || 2022-06-30 14:21:15
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+    <script data-goatcounter="https://belkarx.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>placeholder</title>
+  <link rel="stylesheet" href="../css.css">
+  <header><p><a href=../../index.html>home/about-me</a> | <a href=../posts_main.html>posts</a></p></header>
+</head>
+<h2 id="low-levelatypical-technology-fundamentals">Low-level/Atypical Technology Fundamentals</h2>
+<p><em>- A guide I made for a friend on learning basic low-level CS -</em></p>
+<p>This is a probably overwhelming dump of general info and resources to get you started with learning about “technology” on a lower level. You will have to do most of the research, this is just a general guideline/path that is non-comprehensive and not particularly well-organized. You might know some of this already so just skip those parts.</p>
+<ul>
+<li>To start: learning to learn efficiently and effectively tends to be useful. Everyone has their own way but my advice is to take notes and apply whatever you learn when possible</li>
+<li>Know how your OS works (for specifics: Linux is easier to learn than Windows - for Windows there’s a Windows Internals book somewhere, Linux has great docs at <a href="https://tldp.org/">tldp</a> and the arch, gentoo, and slackware wikis are also useful for less kernel- and more userspace- specific information). For more general articles (microkernel vs hybrid vs monolithic for example), visit the <a href="https://wiki.osdev.org/Expanded_Main_Page">osdev wiki</a> and go link hopping</li>
+<li>Finish installing Linux</li>
+<li>Interact with <em>the community</em>
+<ul>
+<li>inputs: hackernews, slashdot, other tech news (arstech, theverge, bleeping computer)</li>
+<li>outputs: chatrooms, discord servers, forums, make some friends, make some foss software, write blog posts</li>
+</ul></li>
+<li>You’re going to run into issues - linuxquestions is a good forum for LFS, the unix stackexchange is good for asking other people to make you bash scripts (lol), stackexchange in general is great as a resource (not so much as a company and their moderation is questionable once you get in deep enough), and just talk to people that know more than you if possible</li>
+<li>Learn basic infosec. It teaches you a lot about backend and is downright fascinating. In your case, reversing (you can learn via a course called <a href="https://guyinatuxedo.github.io/">Nightmare</a>) will be useful, but knowing what a CVE is, how to fuzz (very interesting idea and worth learning), and basic pentesting/rooting automated tools will probably come in handy at some point</li>
+<li>Maybe get a mech keyboard. Just as an idea … get sucked in and become <em>one of us</em> (check out the r/mechanicalkeyboards wiki)</li>
+<li>If you’re working with AI (even if not AGI), make sure to sit down and form an opinion on the ethics and philosophy of what you’re doing (<a href="https://www.lesswrong.com/">lesswrong</a> has articles on the topic)</li>
+<li>I’ve heard good things about <a href="https://www.nand2tetris.org/">nand2tetris</a>, it’s probably a faster way of doing what I did (I dealt directly with building a toy bootloader and writing/reading asm, learned a lot through the osdev wiki, but the information I absorbed was unstructured so … go the book way). But if you learn asm pursely with that, at least know the differences between ARM and x86 and intel vs AT&amp;T syntax (azeria-labs has a good cheatsheet on ARM syntax; it’s RISC and easy to learn)</li>
+<li>Speaking of books: read and implement Crafting Interpreters! It teaches you how interpreted langs work underneath by guiding you in building one (also provides instructions on a bytecode VM). And/or learn LISP, it’s basically an AST (abstract syntax tree) and is the mother of all programming languages (exaggeration but many popular langs are inspired by it in some way or another)</li>
+<li>Distributed systems are interesting as a curiosity - learn how DHTs work (see the kademlia/pastry specs), build a toy blockchain in python in like 20 mins (locally, so you’re just hashing blocks to get the idea)</li>
+<li>Learn basic hardware info - Linus Tech Tips is your friend, binge the videos; they’re entertaining</li>
+<li>For sliiightly more industrial hardware look at r/homelab’s wiki (reddit has a lot of amazing wikis on various generally non-technical concepts - r/onion insanely useful as is that of r/truerateme). For even more industrial hardware IBM and Dell have server specs available and various conferences that get into even more detail</li>
+<li>Networking tends to be useful - I found <a href="https://www.youtube.com/watch?v=cNwEVYkx2Kk">this</a> to be a phenomenal resource but it’s a bit long as a series and the end videos are unnecessary if you just want a basic overview. NetworkChuck makes really nice videos too, you can just watch his “CCNA prep” vids and be satiated</li>
+<li>A liiiittle bit of electrical engineering goes a long way. Know what a transistor, resistor, inductor, capacitor, diode, are, know the physics of electromagnetism (<a href="https://faculty.wcas.northwestern.edu/infocom/Ideas/electric.html">here</a> is a good summary of physics as a whole in case you want a good reference to refresh your memory), etc</li>
+<li>Learn how a CPU works down to the mosfet and also maybe read about PCBs - <a href="https://www.masterzen.fr/2020/05/03/designing-a-keyboard-part-1/">this</a> is a 4-part in-depth tutorial on how to make a keyboard PCB from scratch.</li>
+<li>Playing with logic gates is also interesting; Ben Eater makes <em>fascinating</em> videos on low-level design (built an 8-bit computer from scratch)</li>
+<li>As for FOSS contribution - hacktober is good because people tag easy issues as such, and in general just look for ‘good-first-issue’ to start. Set up a local git env (and learn to use the CLI - <a href="https://belkarx.github.io/posts/finished/Git%20Cheatsheet.html">this</a> has the basic commands, look up everything else). Also learn how git works as a VCS, there are a few ‘build your own git’ tutorials out there</li>
+<li>“build your own [anything]” tends to teach you a lot - <a href="https://github.com/codecrafters-io/build-your-own-x">here’s</a> an awesome resource list</li>
+<li>Many large projects use mailing lists to coordinate. Learn how those work with torproject or <a href="https://www.eternal-september.org/">eternal-september</a> (which is usenet articles)</li>
+<li>Start writing bash and python scripts to automate tasks that seem tedious or repetitive</li>
+<li>On a higher, less technical level - learn how to ask questions and how to contact people. Even “famous” individuals will sometimes answer questions if they are specific to that person’s expertise - just be polite, humble, and contact them, it’s always worth a shot. Also, work with some people on software (open-source or small group of friends) and deal with the difficulties you run into there (organization of tasks, merge conflicts, etc)</li>
+<li><a href="https://cses.fi/book/book.pdf">The Programmer’s Handbook</a> is an amazing overview of competition programming</li>
+<li>Casually watch the newest hardware developments, specifically in computing (know the difference between efficiency and performance cores (and AI cores, those are cool), know what an FPU/APU is, know advantages of GPU-style parallel computing over CPU general computing and vice versa, know the power draw of various devices,know about the specs of the latest NVME/PCIe version, DDR5 cas latency and bandwidth, how computing “fabrics” work, smartNICs because those are apparently a thing now, etc. You’ll find this info by looking further into the things mentioned in LTT videos and by reading tech news (check out <a href="https://www.eetimes.com/">eetimes</a> for more technical info))</li>
+<li>Always be wary of everything (for example, self-driving cars (and a large boat, at some point) were effectively hacked through GPS spoofing, and Shodan (interent-connected-devices search engine) shows a lot of publicly vulnerable webcams. There are also undoubtedly unavoidable and undiscovered vulnerabilities similar to Spectre (and general side channel attacks) and Heartbleed, and <em>so many</em> supply chain attacks. Everything is compromised.</li>
+<li>Learn a bit about crypto (‘crypto means <em>cryptography</em>’ is a refrain among many technical individuals as most are rather negatively disposed to cryptocurrency believing it to be basically vaporware). iAnyway, learn about RSA and PKI in general, know how AES works (<a href="http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html">here’s</a> a comic that explains it pretty well), know about NTRU and general post-quantum ciphers (and Shor’s algorithm - also quantum computing as a whole is interesting - learn how it works low level, error-correcting methods, IBM has a cloud quantum computer available via qiskit)</li>
+</ul>
+<p>Software recommendations:</p>
+<ul>
+<li><p>Perhaps get in the habit of using vim (or neovim)</p></li>
+<li><p>Use a tiling window manager such as i3 or sway. You will never want to go back</p></li>
+<li><p>bookmarklet for speeding up videos: <code>javascript:document.getElementsByClassName("video-stream")[0].playbackRate = '2.75'; void(0)</code></p></li>
+</ul>
+<p>Below is various mostly FOSS software that I would recommend using if you have a usecase for it. These are just things I’ve been using for a while and have enjoyed, not necessarily the best options out there so take this with a grain of salt.</p>
+<p>Typical stuff: VScode, GIMP, VLC, <code>exiftools</code> (removes exifdata - always do this before posting pictures as many phones add geolocation data), wireshark (packet sniffer - learn to use this), thunderbird, some sort of rss reader, keepassxc (use. a. password. manager. the earlier you start the better), gpg (send me your public key! <a href="https://belkarx.github.io/posts/finished/GPG%20Quickstart.html">Here’s</a> a guide on getting one), some sort of clipboard history manager (I personally can’t live without this but depends on your workflow), learn docker (there’s a video on implementing it in golang on docker’s main website, if you speed through it you should get the gist of containerization), degoogled chromium and tor-browser-bundle are good browsers (Use Ublock Origin, huge QOL improvement), <code>valgrind</code> for detecting memleaks in C/C++, <code>nmap</code> for network-mapping (run it with some scripts to pentest your own net), zsh over bash (I can give you my dots), for shell: <code>dust</code> to replace <code>du</code>, <code>broot</code> to replace <code>tree</code>, <code>bat</code> to replace <code>cat</code>, flameshot for screenshots</p>
