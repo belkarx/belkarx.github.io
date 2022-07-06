@@ -43,3 +43,5 @@
 
 \> [Low-level\Atypical Technology Fundamentals](finished/Low-level\Atypical Technology Fundamentals.html) || 2022-06-30 14:21:15
 
+\> [The Short-Term Future of CS](finished/The Short-Term Future of CS.html) || 2022-07-06 13:40:09
+
