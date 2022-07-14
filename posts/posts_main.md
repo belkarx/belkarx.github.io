@@ -45,3 +45,5 @@
 
 \> [The Short-Term Future of CS](finished/The Short-Term Future of CS.html) || 2022-07-06 13:40:09
 
+\> [About Me, 2022.md](finished/About Me, 2022.md.html) || 
+
