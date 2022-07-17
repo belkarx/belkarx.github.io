@@ -53,3 +53,5 @@
 
 \> [About Me, 2022](finished/About Me, 2022.html) || 2022-07-13 22:05:39
 
+\> [School Systems Do Not Properly Encourage Collaboration.md](finished/School Systems Do Not Properly Encourage Collaboration.md.html) || 
+
