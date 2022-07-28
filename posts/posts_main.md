@@ -57,3 +57,5 @@
 
 \> [School Systems Do Not Properly Encourage Collaboration](finished/School Systems Do Not Properly Encourage Collaboration.html) || 2022-07-17 12:35:59
 
+\> [Wasting Time](finished/Wasting Time.html) || 2022-07-27 23:08:34
+
