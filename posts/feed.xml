@@ -1,0 +1,16 @@
+<feed>
+<link href="https://belkarx.github.io/feed.xml" rel="self" type="application/atom+xml"/>
+<link href="https://belkarx.github.io" rel="alternate" type="text/html"/>
+<published></published>
+<id>https://belkarx.github.io/feed.xml</id>
+<title type="html">Belkarx</title>
+<subtitle>
+Science, philosophy, security
+</subtitle>
+<entry>
+    <title type="html"></title>
+    <link href="https://belkarx.github.io/placeholder" rel="alternate" type="text/html" title="placeholder"/>
+    <published>TIME</published>
+    <id>https://belkarx.github.io/placeholder.html</id>
+</entry>
+</feed>
