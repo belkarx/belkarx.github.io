@@ -1,4 +1,6 @@
-let data = {
+console.log("JS LOADED")
+
+const data = {
     "15": {
         "Entendre dire que": "to hear that",
         "S'entendre bien/mal": "to get along well/badly",
@@ -99,7 +101,7 @@ let data = {
         "Se mettre à (+ verbe)": "to begin",
         "Quelque part": "somewhere",
         "Envoyer chercher": "to send for",
-        "De nouveau": "again",
+        "Denouveau": "again",
         "Se passer": "to happen",
         "À plusieurs reprises": "repeatedly",
         "Faire de son mieux": "to do one's best",
@@ -183,44 +185,103 @@ let data = {
 
 
 let buttons = document.querySelectorAll("button");
-console.log(buttons)
 
 let data_container = document.getElementById("cards");
 
 let outerDiv;
+let toggled = false;
+let active_ids = [];
+
 
 buttons.forEach(button => {
   button.addEventListener("click", event => {
-    if (event.target.style.backgroundColor === "") {
-      event.target.style.backgroundColor = "#ffffff";
-      
-      outerDiv = document.createElement("div");
-      outerDiv.id = "c_" + button.id;
-      
-      for (const [key, value] of Object.entries(data[button.id])) {
-        let c = document.createElement("div");
-        c.className = "holding"
-        
-        let k = document.createElement("p");
-        k.innerText = key;
-        k.className = "q";
-        c.appendChild(k);
-
-        let v = document.createElement("p");
-        v.innerText = value;
-        v.className = "a";
-        c.appendChild(v);
-        
-        outerDiv.appendChild(c);
+    let id = button.id;
+    if (button.style.backgroundColor === "") {
+      if (id === "toggle") {
+         button.style.backgroundColor = "#f2f2f2";
+         toggled = true;
+         console.log("populating " + active_ids + " given we've changed to" + toggled);
+         populate(active_ids, toggled);
+      } else {
+        active_ids.push(id);
+        button.style.backgroundColor = "#ffffff";
+         console.log("populating " + id + " given we re " + toggled);
+        populate(id, toggled);
       }
-     
-      data_container.appendChild(outerDiv);
-      
     } else {
-      event.target.style.backgroundColor = "";
-      document.getElementById("c_"+button.id).outerHTML = "";
+      button.style.backgroundColor = "";
+      if (id == "toggle") {
+        toggled = false;
+        console.log(active_ids);
+         console.log("populating " + active_ids + " given we've changed to" + toggled);
+        populate(active_ids, toggled);
+      } else {
+         console.log("removing element by id " + id);
+        document.getElementById("c_"+id).outerHTML = "";
+        
+        let index = active_ids.indexOf(id);
+        active_ids.splice(index, 1);
+         console.log("removed element by id " + id + " from active ids, now have " + active_ids);
+      }
     }
   });
 });
 
 
+
+function populate(id, toggled) {
+  if (toggled) {
+    class_1 = "a"
+    class_2 = "q"
+  } else {
+    class_1 = "q"
+    class_2 = "a"
+  }
+  
+  if (!(Array.isArray(id)) && id !== []) {
+    console.log("FROM POPULATE: populating " + id + "  given class1 is " + class_1);
+    console.log(data_container);
+    console.log(new_div(class_1, class_2, id));
+    data_container.appendChild(new_div(class_1, class_2, id));
+  } 
+  else {
+    var nodesFragment = document.createDocumentFragment();
+    console.log(id);
+    for (let i of id) {
+      console.log("HERE");
+      console.log(i);
+      nodesFragment.appendChild(new_div(class_1, class_2, i));
+    }
+    console.log(data_container);
+    data_container.replaceWith(nodesFragment);
+    console.log(data_container);
+    data_container.id = "cards";
+  }
+}
+
+
+function new_div(class_1, class_2, id) {
+  let outerDiv = document.createElement("div");
+  outerDiv.id = "c_" + id;
+  console.log(id);
+
+  for (const [key, value] of Object.entries(data[id])) {
+    let c = document.createElement("div");
+    c.className = "holding"
+
+    let k = document.createElement("p");
+    k.innerText = key;
+    k.className = class_1;
+    c.appendChild(k);
+
+    let v = document.createElement("p");
+    v.innerText = value;
+    v.className = class_2;
+    c.appendChild(v);
+
+    outerDiv.appendChild(c);
+  }
+  return outerDiv;
+}
+
+ 
