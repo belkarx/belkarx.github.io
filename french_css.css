@@ -1,0 +1,21 @@
+.q,.a {
+  display: inline-block;
+  flex-basis: 15%;
+}
+
+.a {
+  color:white;
+  padding:5px;
+  border: 1px solid black;
+  transition: color 5s;
+  transition-timing-function: cubic-bezier(0,1,0,1);
+}
+
+.a:active {
+  color:black;
+}
+
+.holding {
+    display: flex;
+    padding: 10px;
+}
