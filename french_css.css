@@ -11,10 +11,13 @@
   border: 1px solid black;
   transition: color .5s;
   transition-timing-function: cubic-bezier(1,0,1,0);
+  -webkit-transition: color .5s
+  -webkit-transition-timing-function: cubic-bezier(1,0,1,0);
 }
 
 .a:active {
   color:black;
+  -webkit-transition: color 0s;
   transition:color 0s;
 }
   
