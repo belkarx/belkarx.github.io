@@ -183,6 +183,42 @@ const data = {
     }
 };
 
+const mots = {
+"panne": "breakdown",
+"lendemain": "tomorrow",
+"cafard": "cockroach",
+"chemin": "path",
+"crever": "to die",
+"coup": "a blow, cut",
+"fil": "thread",
+"économies": "savings",
+"pis": "worse",
+"tant": "so much",
+"lieu": "place",
+"fou": "crazy",
+"peine": "sadness, pain",
+"grasse": "greasy",
+"propos": "about",
+"méfier": "beware",
+"dépit": "spite",
+"assez": "enough",
+"fond": "bottom",
+"reconaissant": "grateful",
+"plusieurs": "several",
+"reprises": "occasions",
+"débarrasser": "to get rid of",
+"agit": "acts",
+"courant": "current",
+"abord": "aborder (to approach)",
+"plein": "full",
+"train": "rate",
+"Sauter": "jump, skip",
+"fâcher": "angry",
+"suite": "following",
+"tirer": "pull"
+};
+
+const mot_keys = Object.keys(mots);
 
 let buttons = document.querySelectorAll("button");
 
@@ -215,7 +251,19 @@ buttons.forEach(button => {
   });
 });
 
-populate(ids, toggled);
+
+function listenSpans() {
+  let spans = document.querySelectorAll("span.mot");
+  spans.forEach(span => {
+    span.addEventListener("click", event => {
+      let orig = span.textContent;
+      span.innerHTML = mots[orig];;
+      setTimeout(() => {
+        span.innerHTML = orig; 
+      }, 600);
+    })
+  });
+}
 
 function populate(ids, toggled) {
   data_container.innerHTML = "";
@@ -224,12 +272,23 @@ function populate(ids, toggled) {
         outerDiv = document.createElement("div");
         outerDiv.id = "c_" +  id;
       
-        for (const [key, value] of Object.entries(data[id])) {
+        for (let [key, value] of Object.entries(data[id])) {
           c = document.createElement("div");
           c.className = "holding"
 
           let k = document.createElement("p");
-          k.innerText = key;
+
+          if (toggled) {
+            for (const word of key.split(" ")) {
+              if (mot_keys.includes(word)) {
+                console.log(word);
+                key = key.replace(word, "<span class=mot>" + word + "</span>");
+                console.log(key);
+              }
+            }
+          }
+          k.innerHTML = key;
+          
           k.className = toggled && 'q' || !(toggled) && 'a'
           c.appendChild(k);
 
@@ -240,7 +299,7 @@ function populate(ids, toggled) {
           
           outerDiv.appendChild(c);
         }
-    
         data_container.append(outerDiv);
     }
+  listenSpans();
 }
