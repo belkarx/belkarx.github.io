@@ -30,6 +30,10 @@
   align-items: center;
 }
 
+.mot {
+  color:blue;
+}
+
 button {
   width: calc(15% - 20px);
   height: 50px;
@@ -53,4 +57,3 @@ button:hover {
     width: calc(20% - 20px);
     font-size: 0.8em;
 }
-
