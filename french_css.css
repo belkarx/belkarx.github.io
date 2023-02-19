@@ -5,7 +5,9 @@
 
 .a {
   color:white;
-  padding:5px;
+  padding: 5px;
+  margin-right: 15px;
+  margin-left: 5px;
   border: 1px solid black;
   transition: color .5s;
   transition-timing-function: cubic-bezier(1,0,1,0);
@@ -21,8 +23,6 @@
     padding: 10px;
 }
 
-
-
 .buttons {
   display: flex;
   flex-wrap: wrap;
@@ -31,7 +31,7 @@
 }
 
 button {
-  width: calc(10% - 20px);
+  width: calc(15% - 20px);
   height: 50px;
   padding: 1em;
   margin: 10px;
