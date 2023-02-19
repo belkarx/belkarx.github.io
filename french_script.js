@@ -188,100 +188,59 @@ let buttons = document.querySelectorAll("button");
 
 let data_container = document.getElementById("cards");
 
-let outerDiv;
+let c, outerDiv, id;
 let toggled = false;
-let active_ids = [];
 
-
+let ids = [];
 buttons.forEach(button => {
   button.addEventListener("click", event => {
-    let id = button.id;
-    if (button.style.backgroundColor === "") {
-      if (id === "toggle") {
-         button.style.backgroundColor = "#f2f2f2";
-         toggled = true;
-         console.log("populating " + active_ids + " given we've changed to" + toggled);
-         populate(active_ids, toggled);
-      } else {
-        active_ids.push(id);
-        button.style.backgroundColor = "#ffffff";
-         console.log("populating " + id + " given we re " + toggled);
-        populate(id, toggled);
-      }
-    } else {
-      button.style.backgroundColor = "";
-      if (id == "toggle") {
-        toggled = false;
-        console.log(active_ids);
-         console.log("populating " + active_ids + " given we've changed to" + toggled);
-        populate(active_ids, toggled);
-      } else {
-         console.log("removing element by id " + id);
-        document.getElementById("c_"+id).outerHTML = "";
-        
-        let index = active_ids.indexOf(id);
-        active_ids.splice(index, 1);
-         console.log("removed element by id " + id + " from active ids, now have " + active_ids);
-      }
+    id = button.id;
+    if (id == "toggle") {
+      toggled = !(toggled);
+      console.log(toggled);
+      console.log(ids);
+      populate(ids, toggled);
+      return;
     }
+    if (button.style.backgroundColor === "") {
+         button.style.backgroundColor = "#f2f2f2";
+         ids.push(id);
+         populate(ids, toggled);
+    } else {
+        button.style.backgroundColor = "";
+        let index = ids.indexOf(id);
+        ids.splice(index, 1);
+        populate(ids, toggled);
+      }
   });
 });
 
+populate(ids, toggled);
 
+function populate(ids, toggled) {
+  data_container.innerHTML = "";
+  for (let id of ids) {
+        console.log(id);
+        outerDiv = document.createElement("div");
+        outerDiv.id = "c_" +  id;
+      
+        for (const [key, value] of Object.entries(data[id])) {
+          c = document.createElement("div");
+          c.className = "holding"
 
-function populate(id, toggled) {
-  if (toggled) {
-    class_1 = "a"
-    class_2 = "q"
-  } else {
-    class_1 = "q"
-    class_2 = "a"
-  }
-  
-  if (!(Array.isArray(id)) && id !== []) {
-    console.log("FROM POPULATE: populating " + id + "  given class1 is " + class_1);
-    console.log(data_container);
-    console.log(new_div(class_1, class_2, id));
-    data_container.appendChild(new_div(class_1, class_2, id));
-  } 
-  else {
-    var nodesFragment = document.createDocumentFragment();
-    console.log(id);
-    for (let i of id) {
-      console.log("HERE");
-      console.log(i);
-      nodesFragment.appendChild(new_div(class_1, class_2, i));
+          let k = document.createElement("p");
+          k.innerText = key;
+          k.className = toggled && 'q' || !(toggled) && 'a'
+          c.appendChild(k);
+
+          let v = document.createElement("p");
+          v.innerText = value;
+          v.className = toggled && 'a' || !(toggled) && 'q'
+          c.appendChild(v);
+          
+          outerDiv.appendChild(c);
+        }
+    
+        data_container.append(outerDiv);
     }
-    console.log(data_container);
-    data_container.replaceWith(nodesFragment);
-    console.log(data_container);
-    data_container.id = "cards";
-  }
 }
-
-
-function new_div(class_1, class_2, id) {
-  let outerDiv = document.createElement("div");
-  outerDiv.id = "c_" + id;
-  console.log(id);
-
-  for (const [key, value] of Object.entries(data[id])) {
-    let c = document.createElement("div");
-    c.className = "holding"
-
-    let k = document.createElement("p");
-    k.innerText = key;
-    k.className = class_1;
-    c.appendChild(k);
-
-    let v = document.createElement("p");
-    v.innerText = value;
-    v.className = class_2;
-    c.appendChild(v);
-
-    outerDiv.appendChild(c);
-  }
-  return outerDiv;
-}
-
- 
