@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoneme Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .filter-buttons {
+            margin-bottom: 20px;
+        }
+        button {
+            margin-right: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        button.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #graph {
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="filter-buttons">
+        <button onclick="toggleFilter('group')" id="group-btn">Group</button>
+        <button onclick="toggleFilter('place')" id="place-btn">Place</button>
+        <button onclick="toggleFilter('manner')" id="manner-btn">Manner</button>
+        <button onclick="toggleFilter('voicing')" id="voicing-btn">Voicing</button>
+        <button onclick="toggleFilter('height')" id="height-btn">Height</button>
+        <button onclick="toggleFilter('backness')" id="backness-btn">Backness</button>
+        <button onclick="toggleFilter('rounding')" id="rounding-btn">Rounding</button>
+        <button onclick="toggleFilter('length')" id="length-btn">Length</button>
+    </div>
+    <div id="graph"></div>
+    <script>
+        const phonemes = {"consonants":{"p":{"place":"bilabial","manner":"plosive","voicing":"voiceless"},"b":{"place":"bilabial","manner":"plosive","voicing":"voiced"},"t":{"place":"alveolar","manner":"plosive","voicing":"voiceless"},"d":{"place":"alveolar","manner":"plosive","voicing":"voiced"},"k":{"place":"velar","manner":"plosive","voicing":"voiceless"},"g":{"place":"velar","manner":"plosive","voicing":"voiced"},"f":{"place":"labiodental","manner":"fricative","voicing":"voiceless"},"v":{"place":"labiodental","manner":"fricative","voicing":"voiced"},"θ":{"place":"dental","manner":"fricative","voicing":"voiceless"},"ð":{"place":"dental","manner":"fricative","voicing":"voiced"},"s":{"place":"alveolar","manner":"fricative","voicing":"voiceless"},"z":{"place":"alveolar","manner":"fricative","voicing":"voiced"},"ʃ":{"place":"post-alveolar","manner":"fricative","voicing":"voiceless"},"ʒ":{"place":"post-alveolar","manner":"fricative","voicing":"voiced"},"h":{"place":"glottal","manner":"fricative","voicing":"voiceless"},"tʃ":{"place":"post-alveolar","manner":"affricate","voicing":"voiceless"},"dʒ":{"place":"post-alveolar","manner":"affricate","voicing":"voiced"},"m":{"place":"bilabial","manner":"nasal","voicing":"voiced"},"n":{"place":"alveolar","manner":"nasal","voicing":"voiced"},"ŋ":{"place":"velar","manner":"nasal","voicing":"voiced"},"l":{"place":"alveolar","manner":"approximant","voicing":"voiced"},"r":{"place":"post-alveolar","manner":"approximant","voicing":"voiced"},"j":{"place":"palatal","manner":"approximant","voicing":"voiced"},"w":{"place":"bilabial","manner":"approximant","voicing":"voiced"}},"vowels":{"i":{"height":"close","backness":"front","rounding":"unrounded","length":"long"},"ɪ":{"height":"close","backness":"front","rounding":"unrounded","length":"short"},"e":{"height":"mid","backness":"front","rounding":"unrounded"},"æ":{"height":"open","backness":"front","rounding":"unrounded"},"ʌ":{"height":"open","backness":"central","rounding":"unrounded"},"ɑ":{"height":"open","backness":"back","rounding":"unrounded","length":"long"},"ɒ":{"height":"open","backness":"back","rounding":"rounded"},"ɔ":{"height":"mid","backness":"back","rounding":"rounded","length":"long"},"ʊ":{"height":"close","backness":"back","rounding":"rounded","length":"short"},"u":{"height":"close","backness":"back","rounding":"rounded","length":"long"},"ɜ":{"height":"mid","backness":"central","rounding":"unrounded","length":"long"},"ə":{"height":"mid","backness":"central","rounding":"unrounded"}}};
+
+        const nodes = [];
+        let links = [];
+        const activeFilters = new Set();
+
+        // Create nodes
+        for (const [type, phonemeGroup] of Object.entries(phonemes)) {
+            for (const [symbol, properties] of Object.entries(phonemeGroup)) {
+                nodes.push({ id: symbol, group: type, ...properties });
+            }
+        }
+
+        links = []
+        // Set up the SVG
+const width = 800;
+const height = 600;
+const svg = d3.select("#graph")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+
+console.log(d3.forceCenter(width / 2, height / 2))
+// Create a force simulation
+const simulation = d3.forceSimulation(nodes)
+  .force("charge", d3.forceManyBody().strength(-1))
+  .force("center", d3.forceCenter(width / 2, height / 2))
+  .force("collision", d3.forceCollide().radius(50))
+  .on("tick", ticked);
+
+// Create node elements
+const node = svg.append("g")
+  .selectAll("circle")
+  .data(nodes)
+  .enter().append("circle")
+  .attr("r", 20)
+  .attr("fill", d => d.group === "consonants" ? "#69b3a2" : "#404080")
+  .call(d3.drag()
+    .on("start", dragstarted)
+    .on("drag", dragged)
+    .on("end", dragended));
+
+// Create text labels
+const label = svg.append("g")
+  .selectAll("text")
+  .data(nodes)
+  .enter().append("text")
+  .text(d => d.id)
+  .attr("font-size", 12)
+  .attr("fill", "white")
+  .attr("dx", -5)
+  .attr("dy", 5);
+
+// ... (previous code remains the same until the updateLinks function)
+
+// Define colors for each filter
+const filterColors = {
+  'group': '#ff0000',     // Red
+  'place': '#00ff00',     // Green
+  'manner': '#0000ff',    // Blue
+  'voicing': '#ffff00',   // Yellow
+  'height': '#00ffff',    // Cyan
+  'backness': '#ff00ff',  // Magenta
+  'rounding': '#ffa500',  // Orange
+  'length': '#800080'     // Purple
+};
+
+// Function to create a unique ID for each link
+function getLinkId(source, target) {
+  return `link-${source.id}-${target.id}`;
+}
+
+// Function to update links based on active filters
+function updateLinks() {
+  // Remove existing links and gradients
+  svg.selectAll(".link").remove();
+  svg.selectAll("defs").remove();
+
+  // Only create links if there are active filters
+  if (activeFilters.size > 0) {
+    // Create new links based on active filters
+    links = [];
+    nodes.forEach((node1, i) => {
+      nodes.slice(i + 1).forEach(node2 => {
+        const matchingFilters = Array.from(activeFilters).filter(filter => 
+          node1[filter] !== undefined && 
+          node2[filter] !== undefined && 
+          node1[filter] === node2[filter]
+        );
+        if (matchingFilters.length > 0) {
+          links.push({ 
+            source: node1, 
+            target: node2, 
+            filters: matchingFilters,
+            strength: matchingFilters.length
+          });
+        }
+      });
+    });
+
+    // Create gradients
+    const defs = svg.append("defs");
+    links.forEach(link => {
+      const gradient = defs.append("linearGradient")
+        .attr("id", getLinkId(link.source, link.target));
+      
+      link.filters.forEach((filter, index) => {
+        gradient.append("stop")
+          .attr("offset", `${index / (link.filters.length - 1) * 100}%`)
+          .attr("stop-color", filterColors[filter]);
+      });
+    });
+
+    // Add new links to the SVG
+    svg.insert("g", ":first-child")
+      .selectAll(".link")
+      .data(links)
+      .enter().append("line")
+      .attr("class", "link")
+      .attr("stroke", d => `url(#${getLinkId(d.source, d.target)})`)
+      .attr("stroke-opacity", 0.6)
+      .attr("stroke-width", d => d.strength * 2); // Increase width for stronger links
+  }
+
+  // Update the simulation with new links
+  simulation.force("link", d3.forceLink(links).id(d => d.id)
+    .distance(100)
+    .strength(d => d.strength * 0.1)) // Adjust link strength based on matching filters
+    .alpha(1)
+    .restart();
+}
+
+// Function to toggle filters
+function toggleFilter(filter) {
+  if (activeFilters.has(filter)) {
+    activeFilters.delete(filter);
+    document.getElementById(`${filter}-btn`).classList.remove("active");
+  } else {
+    activeFilters.add(filter);
+    document.getElementById(`${filter}-btn`).classList.add("active");
+  }
+  updateLinks();
+}
+// Tick function to update positions
+function ticked() {
+  node
+    .attr("cx", d => d.x)
+    .attr("cy", d => d.y);
+
+  label
+    .attr("x", d => d.x)
+    .attr("y", d => d.y);
+
+  svg.selectAll(".link")
+    .attr("x1", d => d.source.x)
+    .attr("y1", d => d.source.y)
+    .attr("x2", d => d.target.x)
+    .attr("y2", d => d.target.y);
+}
+
+// Drag functions
+function dragstarted(event, d) {
+  if (!event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(event, d) {
+  d.fx = event.x;
+  d.fy = event.y;
+}
+
+function dragended(event, d) {
+  if (!event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+}
+
+function addColorLegend() {
+  const legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", "translate(20,20)");
+
+  const legendItems = Object.entries(filterColors);
+
+  legendItems.forEach(([filter, color], index) => {
+    const legendItem = legend.append("g")
+      .attr("transform", `translate(0, ${index * 20})`);
+
+    legendItem.append("rect")
+      .attr("width", 15)
+      .attr("height", 15)
+      .attr("fill", color);
+
+    legendItem.append("text")
+      .attr("x", 20)
+      .attr("y", 12)
+      .text(filter)
+      .style("font-size", "12px");
+  });
+}
+
+// Call this function after setting up the SVG
+addColorLegend();
+// Initialize the visualization
+//updateLinks();
+// Insert the JavaScript code from the previous artifact here
+    </script>
+</body>
+</html>
